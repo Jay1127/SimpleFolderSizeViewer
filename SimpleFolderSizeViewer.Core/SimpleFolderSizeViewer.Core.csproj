@@ -52,7 +52,7 @@
     <Compile Include="DataModel\IconStorage.cs" />
     <Compile Include="FolderSizeBuilder.cs" />
     <Compile Include="IconExtractor.cs" />
-    <Compile Include="PathNavigator.cs" />
+    <Compile Include="History\PathNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

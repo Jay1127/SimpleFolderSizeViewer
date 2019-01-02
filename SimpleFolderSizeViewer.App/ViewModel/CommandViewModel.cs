@@ -18,17 +18,25 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public RelayCommand OpenCommand { get; }
         public RelayCommand ScanCommand { get; }
 
+        public RelayCommand MovePrevFolderCommand { get; }
+        public RelayCommand MoveNextFolderCommand { get; }
+        public RelayCommand MoveParentFolderCommand { get; }
+        public RelayCommand MoveRootFolderCommand { get; }
+
         public CommandViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
 
-            OpenCommand = new RelayCommand(() => ExecuteOpen());
-            ScanCommand = new RelayCommand(() => ExecuteScan());
-            
-            //_mainViewModel = new ViewModelLocator().Main;
+            OpenCommand = new RelayCommand(() => ExecuteOpenCommand());
+            ScanCommand = new RelayCommand(() => ExecuteScanCommand());
+
+            MovePrevFolderCommand = new RelayCommand(ExecuteMovePrevCommand);
+            MoveNextFolderCommand = new RelayCommand(ExecuteMoveNextCommand);
+            MoveParentFolderCommand = new RelayCommand(ExecuteMoveParentCommand);
+            MoveRootFolderCommand = new RelayCommand(ExecuteMoveRootCommand);
         }
 
-        private void ExecuteOpen()
+        private void ExecuteOpenCommand()
         {
             using (var dialog = new CommonOpenFileDialog())
             {
@@ -43,7 +51,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             }
         }
 
-        private void ExecuteScan()
+        private void ExecuteScanCommand()
         {
             var folderTree = _mainViewModel.FolderTreeViewModel;
             var root = folderTree.Root;
@@ -52,5 +60,26 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             
             folderTree.UpdateRoot(folderTree.Root);
         }
+
+        private void ExecuteMovePrevCommand()
+        {
+
+        }
+
+        private void ExecuteMoveNextCommand()
+        {
+
+        }
+
+        private void ExecuteMoveParentCommand()
+        {
+
+        }
+
+        private void ExecuteMoveRootCommand()
+        {
+
+        }
+
     }
 }
