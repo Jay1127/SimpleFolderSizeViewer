@@ -20,7 +20,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             SubNodes = new ObservableCollection<IFileSystemModel<FileSystemEntity>>();
         }
 
-        public void Update(FolderModel selectedFolder)
+        public void UpdateSubItems(FolderModel selectedFolder)
         {
             SubNodes.Clear();
 

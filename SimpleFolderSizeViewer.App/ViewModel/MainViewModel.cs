@@ -29,25 +29,9 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             ColumnSettingsViewModel = new ColumnSettingsViewModel();
             CommandViewModel = new CommandViewModel(this);
             FolderContentViewModel = new FolderContentViewModel();
-            FolderTreeViewModel = new FolderTreeViewModel
-            {
-                SelectionChangedCommand = new RelayCommand<object>(folder =>
-                {
-                    UpdateSelectedFolder(folder as FolderModel);
-                })
-            };
-        }
+            FolderTreeViewModel = new FolderTreeViewModel();
 
-        /// <summary>
-        /// 선택된 폴더 업데이트 후 DataGrid에 SubNode초기화
-        /// </summary>
-        /// <param name="folder"></param>
-        public void UpdateSelectedFolder(FolderModel folder)
-        {
-            if (folder == null) return;
-
-            FolderTreeViewModel.SelectedFolder = folder;
-            FolderContentViewModel.Update(folder);
+            FolderTreeViewModel.FolderSelected += FolderContentViewModel.UpdateSubItems;
         }
     }
 }

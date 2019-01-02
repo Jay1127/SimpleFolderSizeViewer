@@ -35,12 +35,21 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             set => Set<FolderModel>(ref _selectedFolder, value);
         }
 
-        public ICommand SelectionChangedCommand { get; set; }
+        public delegate void FolderSelectedHandler(FolderModel selectedFolder);
+        public FolderSelectedHandler FolderSelected { get; set; }
+
+        public RelayCommand<object> SelectionChangedCommand { get; }
 
         public FolderTreeViewModel()
         {
-
+            SelectionChangedCommand = new RelayCommand<object>(UpdateSelectedFolder);
         }
+
+        private void UpdateSelectedFolder(object newItem)
+        {
+            SelectedFolder = newItem as FolderModel;
+            FolderSelected(SelectedFolder);
+        } 
 
         public void UpdateRoot(FolderModel root)
         {
