@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using SimpleFolderSizeViewer.App.Model;
 using SimpleFolderSizeViewer.Core;
@@ -11,9 +12,11 @@ using System.Threading.Tasks;
 
 namespace SimpleFolderSizeViewer.App.ViewModel
 {
-    public class CommandViewModel
+    public class CommandViewModel : ViewModelBase
     {
         private readonly MainViewModel _mainViewModel;
+
+        private PathNavigator _pathNavigator;
 
         public RelayCommand OpenCommand { get; }
         public RelayCommand ScanCommand { get; }
@@ -27,8 +30,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         {
             _mainViewModel = mainViewModel;
 
-            OpenCommand = new RelayCommand(() => ExecuteOpenCommand());
-            ScanCommand = new RelayCommand(() => ExecuteScanCommand());
+            OpenCommand = new RelayCommand(ExecuteOpenCommand);
+            ScanCommand = new RelayCommand(ExecuteScanCommand);
 
             MovePrevFolderCommand = new RelayCommand(ExecuteMovePrevCommand);
             MoveNextFolderCommand = new RelayCommand(ExecuteMoveNextCommand);
@@ -46,7 +49,9 @@ namespace SimpleFolderSizeViewer.App.ViewModel
                     var folderTree = _mainViewModel.FolderTreeViewModel;
                     var root = new FolderModel(dialog.FileName);
 
-                    folderTree.UpdateRoot(root);;
+                    folderTree.UpdateRoot(root);
+
+                    _pathNavigator = new PathNavigator(root.Entity);
                 }
             }
         }
@@ -63,12 +68,12 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
         private void ExecuteMovePrevCommand()
         {
-
+            _pathNavigator.MovePrev();
         }
 
         private void ExecuteMoveNextCommand()
         {
-
+            _pathNavigator.MoveNext();
         }
 
         private void ExecuteMoveParentCommand()
