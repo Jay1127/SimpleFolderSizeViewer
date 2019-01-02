@@ -1,0 +1,214 @@
+﻿<Window x:Class="SimpleFolderSizeViewer.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+        xmlns:local="clr-namespace:SimpleFolderSizeViewer.App"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="1200" DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <local:IconToImageSourceConverter x:Key="IconToImageSource"/>
+
+        <local:BindingProxy x:Key="NameProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsNameVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="CreationTimeProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsCreationTimeVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="SizeProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsSizeVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="ExtensionProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsExtensionVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="PercentProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsPercentVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="FolderCountProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsSubFolderCountVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="FileCountProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsSubFileCountVisible, Converter={StaticResource BoolToVisibility}}"/>
+        <local:BindingProxy x:Key="ModifiedTimeProxy" Data="{Binding ColumnSettingsViewModel.ColumnSettings.IsModifiedTimeVisible, Converter={StaticResource BoolToVisibility}}"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="81"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Menu IsMainMenu="True" Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Menu.Resources>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Height" Value="15"/>
+                </Style>
+            </Menu.Resources>
+            <MenuItem Header="_File">
+                <MenuItem Header="Save">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentSave" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Save As.." />
+                <MenuItem Header="Exit" InputGestureText="Ctrl+E">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ExitToApp" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Excellent" IsCheckable="True" IsChecked="True" />
+                <MenuItem Header="Rubbish" IsCheckable="True" />
+                <MenuItem Header="Dig Deeper" InputGestureText="Ctrl+D">
+                    <MenuItem Header="Enlightenment?" IsCheckable="True" />
+                    <MenuItem Header="Disappointment" IsCheckable="True" />
+                </MenuItem>
+                <MenuItem Header="Look Deeper" InputGestureText="Ctrl+D">
+                    <MenuItem Header="Plain" />
+                    <MenuItem Header="Ice Cream" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Cut" Command="Cut">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentCut" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Copy" Command="Copy">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentCopy" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Paste" Command="Paste">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentPaste" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <ToolBarTray DataContext="{Binding CommandViewModel}" VerticalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="2" >
+            <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
+                <ToolBar.Resources>
+                    <Style TargetType="{x:Type materialDesign:PackIcon}">
+                        <!--<Setter Property="Margin" Value="-10"/>-->
+                    </Style>
+                </ToolBar.Resources>
+                <Button ToolTip="Back">
+                    <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" />
+                </Button>
+                <Button ToolTip="Forward">
+                    <materialDesign:PackIcon Kind="ArrowRightBoldCircle" />
+                </Button>
+                <Button ToolTip="Up">
+                    <materialDesign:PackIcon Kind="ArrowUpBoldCircle" />
+                </Button>
+                <Button ToolTip="Home">
+                    <materialDesign:PackIcon Kind="Home" />
+                </Button>
+                <Separator />
+
+                <Button ToolTip="Open folder with scanning" Command="{Binding OpenCommand}">
+                    <materialDesign:PackIcon Kind="FolderOpen"/>
+                </Button>
+                <Button ToolTip="Scan All">
+                    <materialDesign:PackIcon Kind="FolderSearch" />
+                </Button>
+                <Separator />
+
+                <Button ToolTip="Column settings" >
+                    <materialDesign:PackIcon Kind="Settings"/>
+                </Button>
+                <Button ToolTip="Error log">
+                    <materialDesign:PackIcon Kind="FolderRemove" />
+                </Button>
+                <ToggleButton ToolTip="Filtering" BorderBrush="Transparent" Style="{StaticResource MaterialDesignFlatToggleButton}">
+                    <materialDesign:PackIcon Kind="Filter" />
+                </ToggleButton>
+                <Separator />
+
+                <ListBox SelectedIndex="0">
+                    <ListBoxItem >
+                        <materialDesign:PackIcon Kind="AlphaB"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="AlphaK"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="AlphaM"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="AlphaG"/>
+                    </ListBoxItem>
+                </ListBox>
+                <Separator />
+            </ToolBar>
+        </ToolBarTray>
+
+        <TreeView DataContext="{Binding FolderTreeViewModel}" 
+                  ItemsSource="{Binding FolderTree}" 
+                  Name="folderTree" Grid.Row="2">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" 
+                                           CommandParameter="{Binding ElementName=folderTree, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                        <Image Source="{Binding Entity.Icon, Converter={StaticResource IconToImageSource}}" Margin="0,0,3,0"/>
+                        <TextBlock Text="{Binding Entity.Name}" Width="200"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+
+        <DataGrid DataContext="{Binding FolderContentViewModel}" 
+                  ItemsSource="{Binding SubNodes}"  
+                  Grid.Row="2" Grid.Column="1"
+                  AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Entity.Icon, Converter={StaticResource IconToImageSource}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Entity.Name}" 
+                                    Visibility="{Binding Data, Source={StaticResource NameProxy}}"
+                                    Header="Name" Width="2*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.Size.SizeByByte}"
+                                    Visibility="{Binding Data, Source={StaticResource SizeProxy}}"
+                                    Header="Size" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.Percent, StringFormat=P2}"
+                                    Visibility="{Binding Data, Source={StaticResource PercentProxy}}" 
+                                    Header="Percent" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.Extension}"
+                                    Visibility="{Binding Data, Source={StaticResource ExtensionProxy}}"
+                                    Header="Type" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.SubFolderCount}"
+                                    Visibility="{Binding Data, Source={StaticResource FolderCountProxy}}"
+                                    Header="SubFolderCount" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.SubFileCount}"
+                                    Visibility="{Binding Data, Source={StaticResource FileCountProxy}}"
+                                    Header="SubFileCount" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.CreationTime}" 
+                                    Visibility="{Binding Data, Source={StaticResource CreationTimeProxy}}"
+                                    Header="CreationTime" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.LastModifiedTime}"
+                                    Visibility="{Binding Data, Source={StaticResource ModifiedTimeProxy}}" 
+                                    Header="LastModifiedTime" Width="*" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>
