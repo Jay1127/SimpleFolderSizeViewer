@@ -17,8 +17,6 @@ namespace SimpleFolderSizeViewer.App.Model
 
         public bool IsExpanded { get; set; }
 
-        public override ICommand DoubleClickedCommand { get; set; }
-
         public FolderModel(string path) : this(new Folder(path))
         {
 

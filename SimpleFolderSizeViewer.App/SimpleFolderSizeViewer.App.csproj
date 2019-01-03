@@ -99,6 +99,7 @@
     <Compile Include="Model\FolderModel.cs" />
     <Compile Include="ViewModel\FolderContentViewModel.cs" />
     <Compile Include="ViewModel\FolderTreeViewModel.cs" />
+    <Compile Include="ViewModel\IFolderSelectionHandle.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

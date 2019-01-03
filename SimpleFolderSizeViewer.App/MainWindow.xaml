@@ -151,7 +151,7 @@
                   Name="folderTree" Grid.Row="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" 
+                    <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}" 
                                            CommandParameter="{Binding ElementName=folderTree, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -173,8 +173,24 @@
 
         <DataGrid DataContext="{Binding FolderContentViewModel}" 
                   ItemsSource="{Binding SubNodes}"  
+                  Name="dgFolderContent"
                   Grid.Row="2" Grid.Column="1"
                   AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding FolderContentViewModel.UpdateSelectedFolderCommand}"
+                                           CommandParameter="{Binding SelectedItem, ElementName=dgFolderContent}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

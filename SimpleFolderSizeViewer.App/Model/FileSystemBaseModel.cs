@@ -13,7 +13,6 @@ namespace SimpleFolderSizeViewer.App.Model
     {
         public T Entity { get; }
         public bool IsSelected { get; set; }
-        public abstract ICommand DoubleClickedCommand { get; set; }
 
         public FileSystemBaseModel(T model)
         {
@@ -22,7 +21,6 @@ namespace SimpleFolderSizeViewer.App.Model
 
         public void Dispose()
         {
-            DoubleClickedCommand = null;
             Entity?.Dispose();
         }
     }

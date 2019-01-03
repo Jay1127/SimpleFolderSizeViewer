@@ -10,8 +10,6 @@ namespace SimpleFolderSizeViewer.App.Model
 {
     public class FileModel : FileSystemBaseModel<File>
     {
-        public override ICommand DoubleClickedCommand { get; set; }
-
         public FileModel(File file) : base(file)
         {
         }
