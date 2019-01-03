@@ -15,7 +15,12 @@ namespace SimpleFolderSizeViewer.App.Model
         public ReadOnlyObservableCollection<FolderModel> SubFolders { get; set; }
         public ReadOnlyObservableCollection<FileModel> SubFiles { get; set; }
 
-        public bool IsExpanded { get; set; }
+        private bool _isExpaned;
+        public bool IsExpanded
+        {
+            get => _isExpaned;
+            set => Set<bool>(ref _isExpaned, value);
+        }
 
         public FolderModel(string path) : this(new Folder(path))
         {

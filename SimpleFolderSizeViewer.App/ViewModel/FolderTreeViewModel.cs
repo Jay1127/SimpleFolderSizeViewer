@@ -47,11 +47,13 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public void UpdatedSelectedFolder(FolderModel selectedFolder)
         {
             SelectedFolder = selectedFolder;
+            SelectedFolder.IsExpanded = true;
+            selectedFolder.IsSelected = true;
         }
 
         private void NotifySelectedFolder(object newItem)
         {
-            UpdatedSelectedFolder(newItem as FolderModel);
+            SelectedFolder = newItem as FolderModel;
             FolderSelected(SelectedFolder);
         } 
 
