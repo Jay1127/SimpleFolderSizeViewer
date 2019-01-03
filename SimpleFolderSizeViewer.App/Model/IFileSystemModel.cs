@@ -10,5 +10,6 @@ namespace SimpleFolderSizeViewer.App.Model
     public interface IFileSystemModel<out T> : IDisposable where T : FileSystemEntity
     {
         T Entity { get; }
+        FolderModel Parent { get; }
     }
 }

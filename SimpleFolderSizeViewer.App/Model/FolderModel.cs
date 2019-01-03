@@ -22,18 +22,18 @@ namespace SimpleFolderSizeViewer.App.Model
             set => Set<bool>(ref _isExpaned, value);
         }
 
-        public FolderModel(string path) : this(new Folder(path))
+        public FolderModel(Folder folder) : this(folder, null)
         {
 
         }
 
-        public FolderModel(Folder folder) : base(folder)
+        public FolderModel(Folder folder, FolderModel parent) : base(folder, parent)
         {
             var subfolders = from subFolder in folder.SubFolders
-                             select new FolderModel(subFolder);
+                             select new FolderModel(subFolder, this);
 
             var subFiles = from subFile in folder.SubFiles
-                           select new FileModel(subFile);
+                           select new FileModel(subFile, this);
 
             SubFolders = new ReadOnlyObservableCollection<FolderModel>(
                 new ObservableCollection<FolderModel>(subfolders));

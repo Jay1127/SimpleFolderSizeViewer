@@ -9,13 +9,12 @@ namespace SimpleFolderSizeViewer.Core.DataModel
 {
     public class File : FileSystemEntity
     {
-        public File(string path) : this(new FileInfo(path))
+        public File(string path, Folder parent) : this(new FileInfo(path), parent)
         {
         }
 
-        public File(FileInfo fileInfo) : base(fileInfo, fileInfo.Length)
+        public File(FileInfo fileInfo, Folder parent) : base(fileInfo, fileInfo.Length)
         {
-            
         }
     }
 }

@@ -47,7 +47,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     var folderTree = _mainViewModel.FolderTreeViewModel;
-                    var root = new FolderModel(dialog.FileName);
+                    var root = new FolderModel(new Folder(dialog.FileName, null));      // no root is null;
 
                     folderTree.UpdateRoot(root);
 
@@ -82,8 +82,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         }
 
         private void ExecuteMoveRootCommand()
-        {
-
+        {            
+            _mainViewModel.FolderTreeViewModel.UpdateSelectedFolderToRoot();
         }
 
     }

@@ -48,20 +48,33 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         {
             SelectedFolder = selectedFolder;
             SelectedFolder.IsExpanded = true;
-            selectedFolder.IsSelected = true;
+            SelectedFolder.IsSelected = true;
+
+            if (!Root.IsSelected)
+            {
+                SelectedFolder.Parent.IsExpanded = true;
+            }
         }
 
         private void NotifySelectedFolder(object newItem)
         {
             SelectedFolder = newItem as FolderModel;
             FolderSelected(SelectedFolder);
-        } 
+        }         
+
+        public void UpdateSelectedFolderToRoot()
+        {
+            UpdateRoot(Root);
+        }
 
         public void UpdateRoot(FolderModel root)
         {
             Root = root;
-            SelectedFolder = root;
+
+            UpdatedSelectedFolder(Root);
+            FolderSelected(SelectedFolder);
+
             FolderTree = new ObservableCollection<FolderModel>() { Root };
-        }        
+        }     
     }
 }

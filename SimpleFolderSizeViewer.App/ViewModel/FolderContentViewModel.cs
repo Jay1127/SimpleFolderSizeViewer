@@ -37,6 +37,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             if (newItem is FolderModel)
             {
                 SelectedFolder = newItem as FolderModel;
+                
                 FolderSelected(SelectedFolder);
             }
             else

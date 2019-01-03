@@ -20,9 +20,12 @@ namespace SimpleFolderSizeViewer.App.Model
             set => Set<bool>(ref _isSelected, value);
         }
 
-        public FileSystemBaseModel(T model)
+        public FolderModel Parent { get; }
+
+        public FileSystemBaseModel(T model, FolderModel parent)
         {
             Entity = model;
+            Parent = parent;
         }
 
         public void Dispose()

@@ -10,7 +10,7 @@ namespace SimpleFolderSizeViewer.App.Model
 {
     public class FileModel : FileSystemBaseModel<File>
     {
-        public FileModel(File file) : base(file)
+        public FileModel(File file, FolderModel parent) : base(file, parent)
         {
         }
     }
