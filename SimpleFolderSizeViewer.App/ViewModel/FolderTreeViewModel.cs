@@ -14,6 +14,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 {
     public class FolderTreeViewModel : ViewModelBase, IFolderSelectionHandle
     {
+        private bool _canNotifing;
+
         private ObservableCollection<FolderModel> _folderTree;
         public ObservableCollection<FolderModel> FolderTree
         {
@@ -44,11 +46,20 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             UpdateSelectedFolderCommand = new RelayCommand<object>(NotifySelectedFolder);
         }
 
+        /// <summary>
+        /// (DataGrid에서 더블클릭된) 선택된 객체에 대해 업데이트
+        /// </summary>
+        /// <param name="selectedFolder"></param>
         public void UpdatedSelectedFolder(FolderModel selectedFolder)
         {
             SelectedFolder = selectedFolder;
             SelectedFolder.IsExpanded = true;
+
+            _canNotifing = false;
+
             SelectedFolder.IsSelected = true;
+
+            _canNotifing = true;
 
             if (!Root.IsSelected)
             {
@@ -56,10 +67,19 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             }
         }
 
+        /// <summary>
+        /// 트리뷰에서 클릭해서 선택된 객체 설정 
+        /// </summary>
+        /// <param name="newItem"></param>
         private void NotifySelectedFolder(object newItem)
         {
+            if (!_canNotifing) return; 
+
             SelectedFolder = newItem as FolderModel;
             FolderSelected(SelectedFolder);
+
+            var pathNavigator = PathNavigator.Instance;
+            pathNavigator.AddPath(SelectedFolder);
         }         
 
         public void UpdateSelectedFolderToRoot()
@@ -70,11 +90,16 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public void UpdateRoot(FolderModel root)
         {
             Root = root;
+            Root.IsExpanded = true;
 
             UpdatedSelectedFolder(Root);
             FolderSelected(SelectedFolder);
 
+            _canNotifing = false;
+
             FolderTree = new ObservableCollection<FolderModel>() { Root };
+
+            _canNotifing = true;
         }     
     }
 }

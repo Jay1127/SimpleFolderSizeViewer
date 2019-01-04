@@ -92,6 +92,7 @@
     <Compile Include="Extension\ObservableCollectionExt.cs" />
     <Compile Include="Model\ColumnSettings.cs" />
     <Compile Include="Model\IFileSystemModel.cs" />
+    <Compile Include="Model\PathNavigator.cs" />
     <Compile Include="ViewModel\ColumnSettingsViewModel.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
     <Compile Include="Model\FileSystemBaseModel.cs" />

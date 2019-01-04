@@ -16,7 +16,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
     {
         private readonly MainViewModel _mainViewModel;
 
-        private PathNavigator _pathNavigator;
+        private Model.PathNavigator _pathNavigator;
 
         public RelayCommand OpenCommand { get; }
         public RelayCommand ScanCommand { get; }
@@ -29,7 +29,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public CommandViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
-
+            _pathNavigator = Model.PathNavigator.Instance;
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             ScanCommand = new RelayCommand(ExecuteScanCommand);
 
@@ -51,7 +51,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
                     folderTree.UpdateRoot(root);
 
-                    _pathNavigator = new PathNavigator(root.Entity);
+                    _pathNavigator.AddPath(root);
                 }
             }
         }
@@ -63,22 +63,44 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
             FolderSizeBuilder.Build(root.Entity);            
             
-            folderTree.UpdateRoot(folderTree.Root);
+            folderTree.UpdateRoot(root);
         }
 
         private void ExecuteMovePrevCommand()
         {
+            if (!_pathNavigator.CanMovePrev())
+            {
+                return;
+            }
+
             _pathNavigator.MovePrev();
+            var folderTree = _mainViewModel.FolderTreeViewModel;
+            folderTree.UpdatedSelectedFolder(_pathNavigator.Current);
+
+            _mainViewModel.FolderContentViewModel.UpdateSubItems(_pathNavigator.Current);
         }
 
         private void ExecuteMoveNextCommand()
         {
+            if (!_pathNavigator.CanMoveNext())
+            {
+                return;
+            }
+
             _pathNavigator.MoveNext();
+            var folderTree = _mainViewModel.FolderTreeViewModel;
+            folderTree.UpdatedSelectedFolder(_pathNavigator.Current);
+
+            _mainViewModel.FolderContentViewModel.UpdateSubItems(_pathNavigator.Current);
         }
 
         private void ExecuteMoveParentCommand()
         {
+            var folderTree = _mainViewModel.FolderTreeViewModel;
+            folderTree.UpdatedSelectedFolder(folderTree.SelectedFolder.Parent);
+            _pathNavigator.AddPath(folderTree.SelectedFolder);
 
+            _mainViewModel.FolderContentViewModel.UpdateSubItems(_pathNavigator.Current);
         }
 
         private void ExecuteMoveRootCommand()
