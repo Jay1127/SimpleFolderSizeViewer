@@ -12,17 +12,24 @@ namespace SimpleFolderSizeViewer.App.Model
     public abstract class FileSystemBaseModel<T> : ObservableObject, IFileSystemModel<T> where T : FileSystemEntity
     {
         public T Entity { get; }
-        public bool IsSelected { get; set; }
-        public abstract ICommand DoubleClickedCommand { get; set; }
 
-        public FileSystemBaseModel(T model)
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set => Set<bool>(ref _isSelected, value);
+        }
+
+        public FolderModel Parent { get; }
+
+        public FileSystemBaseModel(T model, FolderModel parent)
         {
             Entity = model;
+            Parent = parent;
         }
 
         public void Dispose()
         {
-            DoubleClickedCommand = null;
             Entity?.Dispose();
         }
     }

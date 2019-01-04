@@ -17,15 +17,15 @@ namespace SimpleFolderSizeViewer.Core.DataModel
         public List<File> SubFiles { get; }
         public List<FileSystemEntity> SubNodes { get; }
 
-        public Folder(string path) : this(new DirectoryInfo(path))
+        public Folder(string path, Folder parent) : this(new DirectoryInfo(path), parent)
         {
         }
 
-        public Folder(DirectoryInfo directoryInfo) : base(directoryInfo)
+        public Folder(DirectoryInfo directoryInfo, Folder parent) : base(directoryInfo)
         {
             SubFolders = InitSubFolders(directoryInfo);
             SubFiles = directoryInfo.EnumerateFiles()
-                                    .Select(d => new File(d))
+                                    .Select(d => new File(d, this))
                                     .ToList();
 
             Size = new FileSize(SubFiles.Sum(f => f.Size.SizeByByte));
@@ -44,7 +44,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                         continue;
                     }
 
-                    subFolders.Add(new Folder(dirInfo.FullName));
+                    subFolders.Add(new Folder(dirInfo.FullName, this));
                 }
                 catch (UnauthorizedAccessException e)
                 {

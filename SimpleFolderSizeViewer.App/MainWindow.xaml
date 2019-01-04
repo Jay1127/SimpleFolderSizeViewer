@@ -95,21 +95,21 @@
                         <!--<Setter Property="Margin" Value="-10"/>-->
                     </Style>
                 </ToolBar.Resources>
-                <Button ToolTip="Back">
+                <Button Command="{Binding MovePrevFolderCommand}" ToolTip="Move prevous folder">
                     <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" />
                 </Button>
-                <Button ToolTip="Forward">
+                <Button Command="{Binding MoveNextFolderCommand}"  ToolTip="Move next folder">
                     <materialDesign:PackIcon Kind="ArrowRightBoldCircle" />
                 </Button>
-                <Button ToolTip="Up">
+                <Button Command="{Binding MoveParentFolderCommand}"  ToolTip="Move parent folder">
                     <materialDesign:PackIcon Kind="ArrowUpBoldCircle" />
                 </Button>
-                <Button ToolTip="Home">
+                <Button Command="{Binding MoveRootFolderCommand}"  ToolTip="Move root folder">
                     <materialDesign:PackIcon Kind="Home" />
                 </Button>
                 <Separator />
 
-                <Button ToolTip="Open folder with scanning" Command="{Binding OpenCommand}">
+                <Button Command="{Binding OpenCommand}" ToolTip="Open folder with scanning">
                     <materialDesign:PackIcon Kind="FolderOpen"/>
                 </Button>
                 <Button ToolTip="Scan All">
@@ -147,11 +147,11 @@
         </ToolBarTray>
 
         <TreeView DataContext="{Binding FolderTreeViewModel}" 
-                  ItemsSource="{Binding FolderTree}" 
+                  ItemsSource="{Binding FolderTree}"
                   Name="folderTree" Grid.Row="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" 
+                    <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}" 
                                            CommandParameter="{Binding ElementName=folderTree, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -173,8 +173,28 @@
 
         <DataGrid DataContext="{Binding FolderContentViewModel}" 
                   ItemsSource="{Binding SubNodes}"  
+                  Name="dgFolderContent"
                   Grid.Row="2" Grid.Column="1"
                   AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding UpdateSelectedFolderCommand}"
+                                           CommandParameter="{Binding SelectedItem, ElementName=dgFolderContent}"/>
+            </DataGrid.InputBindings>
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}"
+                                           CommandParameter="{Binding SelectedItem, ElementName=dgFolderContent}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

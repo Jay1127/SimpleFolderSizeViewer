@@ -12,8 +12,10 @@ using System.Windows.Input;
 
 namespace SimpleFolderSizeViewer.App.ViewModel
 {
-    public class FolderTreeViewModel : ViewModelBase
+    public class FolderTreeViewModel : ViewModelBase, IFolderSelectionHandle
     {
+        private bool _canNotifing;
+
         private ObservableCollection<FolderModel> _folderTree;
         public ObservableCollection<FolderModel> FolderTree
         {
@@ -35,27 +37,69 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             set => Set<FolderModel>(ref _selectedFolder, value);
         }
 
-        public delegate void FolderSelectedHandler(FolderModel selectedFolder);
+        public RelayCommand<object> UpdateSelectedFolderCommand { get; }
+        
         public FolderSelectedHandler FolderSelected { get; set; }
-
-        public RelayCommand<object> SelectionChangedCommand { get; }
 
         public FolderTreeViewModel()
         {
-            SelectionChangedCommand = new RelayCommand<object>(UpdateSelectedFolder);
+            UpdateSelectedFolderCommand = new RelayCommand<object>(NotifySelectedFolder);
         }
 
-        private void UpdateSelectedFolder(object newItem)
+        /// <summary>
+        /// (DataGrid에서 더블클릭된) 선택된 객체에 대해 업데이트
+        /// </summary>
+        /// <param name="selectedFolder"></param>
+        public void UpdatedSelectedFolder(FolderModel selectedFolder)
         {
+            SelectedFolder = selectedFolder;
+            SelectedFolder.IsExpanded = true;
+
+            _canNotifing = false;
+
+            SelectedFolder.IsSelected = true;
+
+            _canNotifing = true;
+
+            if (!Root.IsSelected)
+            {
+                SelectedFolder.Parent.IsExpanded = true;
+            }
+        }
+
+        /// <summary>
+        /// 트리뷰에서 클릭해서 선택된 객체 설정 
+        /// </summary>
+        /// <param name="newItem"></param>
+        private void NotifySelectedFolder(object newItem)
+        {
+            if (!_canNotifing) return; 
+
             SelectedFolder = newItem as FolderModel;
             FolderSelected(SelectedFolder);
-        } 
+
+            var pathNavigator = PathNavigator.Instance;
+            pathNavigator.AddPath(SelectedFolder);
+        }         
+
+        public void UpdateSelectedFolderToRoot()
+        {
+            UpdateRoot(Root);
+        }
 
         public void UpdateRoot(FolderModel root)
         {
             Root = root;
-            SelectedFolder = root;
+            Root.IsExpanded = true;
+
+            UpdatedSelectedFolder(Root);
+            FolderSelected(SelectedFolder);
+
+            _canNotifing = false;
+
             FolderTree = new ObservableCollection<FolderModel>() { Root };
-        }
+
+            _canNotifing = true;
+        }     
     }
 }

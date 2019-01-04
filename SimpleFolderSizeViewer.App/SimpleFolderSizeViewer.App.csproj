@@ -92,6 +92,7 @@
     <Compile Include="Extension\ObservableCollectionExt.cs" />
     <Compile Include="Model\ColumnSettings.cs" />
     <Compile Include="Model\IFileSystemModel.cs" />
+    <Compile Include="Model\PathNavigator.cs" />
     <Compile Include="ViewModel\ColumnSettingsViewModel.cs" />
     <Compile Include="ViewModel\CommandViewModel.cs" />
     <Compile Include="Model\FileSystemBaseModel.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Model\FolderModel.cs" />
     <Compile Include="ViewModel\FolderContentViewModel.cs" />
     <Compile Include="ViewModel\FolderTreeViewModel.cs" />
+    <Compile Include="ViewModel\IFolderSelectionHandle.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

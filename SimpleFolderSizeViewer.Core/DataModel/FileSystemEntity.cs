@@ -14,6 +14,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
         public string Extension { get; }
         public DateTime LastModifiedTime { get; }
         public string Name { get; }
+        public Folder Parent { get; }
         public string Path { get; }
         public Icon Icon { get; }
         public FileSize Size { get; set; }
@@ -25,8 +26,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
             LastModifiedTime = fileSystemInfo.LastWriteTime;
             Name = fileSystemInfo.Name;
             Path = fileSystemInfo.FullName;
-            Size = new FileSize(sizeByByte);
-            
+            Size = new FileSize(sizeByByte);            
             Icon = IconStorage.Instance.Select(fileSystemInfo);
         }
 
