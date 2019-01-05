@@ -149,5 +149,35 @@
       <Name>SimpleFolderSizeViewer.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\prev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\root.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\scan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\filter.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

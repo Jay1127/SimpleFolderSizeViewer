@@ -5,14 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:local="clr-namespace:SimpleFolderSizeViewer.App"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal" 
-        TextOptions.TextRenderingMode="Auto"        
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1200" DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.Resources>
@@ -30,125 +22,69 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="350.4"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="81"/>
+            <RowDefinition Height="32"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Menu IsMainMenu="True" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <Menu.Resources>
-                <Style TargetType="{x:Type MenuItem}">
-                    <Setter Property="Height" Value="15"/>
+        <ToolBarTray DataContext="{Binding CommandViewModel}" Grid.ColumnSpan="2" Background="Transparent">
+            <ToolBarTray.Resources>
+                <Style TargetType="{x:Type Image}">
+                    <Setter Property="Height" Value="23"/>
                 </Style>
-            </Menu.Resources>
-            <MenuItem Header="_File">
-                <MenuItem Header="Save">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ContentSave" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Save As.." />
-                <MenuItem Header="Exit" InputGestureText="Ctrl+E">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ExitToApp" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem Header="Excellent" IsCheckable="True" IsChecked="True" />
-                <MenuItem Header="Rubbish" IsCheckable="True" />
-                <MenuItem Header="Dig Deeper" InputGestureText="Ctrl+D">
-                    <MenuItem Header="Enlightenment?" IsCheckable="True" />
-                    <MenuItem Header="Disappointment" IsCheckable="True" />
-                </MenuItem>
-                <MenuItem Header="Look Deeper" InputGestureText="Ctrl+D">
-                    <MenuItem Header="Plain" />
-                    <MenuItem Header="Ice Cream" />
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Cut" Command="Cut">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ContentCut" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Copy" Command="Copy">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ContentCopy" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="_Paste" Command="Paste">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon Kind="ContentPaste" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
-
-        <ToolBarTray DataContext="{Binding CommandViewModel}" VerticalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="2" >
-            <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
-                <ToolBar.Resources>
-                    <Style TargetType="{x:Type materialDesign:PackIcon}">
-                        <!--<Setter Property="Margin" Value="-10"/>-->
-                    </Style>
-                </ToolBar.Resources>
+                <Style x:Key="toggleBtn" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Width" Value="30"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="FontSize" Value="16"/>
+                </Style>
+            </ToolBarTray.Resources>
+            <ToolBar Background="Transparent">
                 <Button Command="{Binding MovePrevFolderCommand}" ToolTip="Move prevous folder">
-                    <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" />
+                    <Image Source="pack://application:,,,/Resources/prev.png"/>
                 </Button>
                 <Button Command="{Binding MoveNextFolderCommand}"  ToolTip="Move next folder">
-                    <materialDesign:PackIcon Kind="ArrowRightBoldCircle" />
+                    <Image Source="pack://application:,,,/Resources/next.png"/>
                 </Button>
                 <Button Command="{Binding MoveParentFolderCommand}"  ToolTip="Move parent folder">
-                    <materialDesign:PackIcon Kind="ArrowUpBoldCircle" />
+                    <Image Source="pack://application:,,,/Resources/up.png"/>
                 </Button>
                 <Button Command="{Binding MoveRootFolderCommand}"  ToolTip="Move root folder">
-                    <materialDesign:PackIcon Kind="Home" />
+                    <Image Source="pack://application:,,,/Resources/home.png"/>
                 </Button>
                 <Separator />
-
                 <Button Command="{Binding OpenCommand}" ToolTip="Open folder with scanning">
-                    <materialDesign:PackIcon Kind="FolderOpen"/>
+                    <Image Source="pack://application:,,,/Resources/open.png"/>
                 </Button>
                 <Button ToolTip="Scan All">
-                    <materialDesign:PackIcon Kind="FolderSearch" />
+                    <Image Source="pack://application:,,,/Resources/scan.png"/>
                 </Button>
                 <Separator />
-
                 <Button ToolTip="Column settings" >
-                    <materialDesign:PackIcon Kind="Settings"/>
+                    <Image Source="pack://application:,,,/Resources/settings.png"/>
                 </Button>
                 <Button ToolTip="Error log">
-                    <materialDesign:PackIcon Kind="FolderRemove" />
+                    <Image Source="pack://application:,,,/Resources/error.png"/>
                 </Button>
-                <ToggleButton ToolTip="Filtering" BorderBrush="Transparent" Style="{StaticResource MaterialDesignFlatToggleButton}">
-                    <materialDesign:PackIcon Kind="Filter" />
+                <ToggleButton ToolTip="Filtering" BorderBrush="Transparent">
+                    <Image Source="pack://application:,,,/Resources/filter.png"/>
                 </ToggleButton>
                 <Separator />
-
-                <ListBox SelectedIndex="0">
-                    <ListBoxItem >
-                        <materialDesign:PackIcon Kind="AlphaB"/>
-                    </ListBoxItem>
-                    <ListBoxItem>
-                        <materialDesign:PackIcon Kind="AlphaK"/>
-                    </ListBoxItem>
-                    <ListBoxItem>
-                        <materialDesign:PackIcon Kind="AlphaM"/>
-                    </ListBoxItem>
-                    <ListBoxItem>
-                        <materialDesign:PackIcon Kind="AlphaG"/>
-                    </ListBoxItem>
-                </ListBox>
+                <RadioButton Style="{StaticResource toggleBtn}" Content="B"></RadioButton>
+                <RadioButton Style="{StaticResource toggleBtn}" Content="KB"></RadioButton>
+                <RadioButton Style="{StaticResource toggleBtn}" Content="MB"></RadioButton>
+                <RadioButton Style="{StaticResource toggleBtn}" Content="GB"></RadioButton>
                 <Separator />
             </ToolBar>
         </ToolBarTray>
 
         <TreeView DataContext="{Binding FolderTreeViewModel}" 
                   ItemsSource="{Binding FolderTree}"
-                  Name="folderTree" Grid.Row="2">
+                  Name="folderTree" Grid.Row="1" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
                     <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}" 
@@ -174,7 +110,7 @@
         <DataGrid DataContext="{Binding FolderContentViewModel}" 
                   ItemsSource="{Binding SubNodes}"  
                   Name="dgFolderContent"
-                  Grid.Row="2" Grid.Column="1"
+                  Grid.Row="1"  Grid.Column="1" Background="White"
                   AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column">
             <DataGrid.InputBindings>
                 <MouseBinding Gesture="LeftDoubleClick" Command="{Binding UpdateSelectedFolderCommand}"
