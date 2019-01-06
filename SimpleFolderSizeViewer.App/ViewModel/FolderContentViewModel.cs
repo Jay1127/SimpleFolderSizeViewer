@@ -74,5 +74,11 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             SubNodes.AddRange(selectedFolder.SubFolders);
             SubNodes.AddRange(selectedFolder.SubFiles);
         }
+
+        public void Filter(FilteringInput filteringInput)
+        {
+            FilteringService service = new FilteringService(SubNodes);
+            service.Filter(filteringInput);
+        }
     }
 }

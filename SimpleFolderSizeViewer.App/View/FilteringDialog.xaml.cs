@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleFolderSizeViewer.App.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace SimpleFolderSizeViewer.App
         public FilteringDialog()
         {
             InitializeComponent();
+            var dataContext = (this.DataContext as FilteringViewModel);
+            dataContext.RequestClose += (sender, e) => this.Close();
         }
     }
 }

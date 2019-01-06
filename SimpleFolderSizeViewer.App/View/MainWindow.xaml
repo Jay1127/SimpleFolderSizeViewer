@@ -70,7 +70,9 @@
                 <Button ToolTip="Error log">
                     <Image Source="pack://application:,,,/Resources/error.png"/>
                 </Button>
-                <ToggleButton ToolTip="Filtering" BorderBrush="Transparent">
+                <ToggleButton Command="{Binding ShowFilterDialogCommand}" 
+                              IsChecked="{Binding FilteringViewModel.CanFilter}" 
+                              ToolTip="Filtering" BorderBrush="Transparent">
                     <Image Source="pack://application:,,,/Resources/filter.png"/>
                 </ToggleButton>
                 <Separator />
