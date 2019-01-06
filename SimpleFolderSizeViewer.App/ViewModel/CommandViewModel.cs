@@ -26,6 +26,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public RelayCommand MoveParentFolderCommand { get; }
         public RelayCommand MoveRootFolderCommand { get; }
 
+        public RelayCommand ShowFilterDialogCommand { get; }
+
         public CommandViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -37,6 +39,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             MoveNextFolderCommand = new RelayCommand(ExecuteMoveNextCommand);
             MoveParentFolderCommand = new RelayCommand(ExecuteMoveParentCommand);
             MoveRootFolderCommand = new RelayCommand(ExecuteMoveRootCommand);
+
+            ShowFilterDialogCommand = new RelayCommand(ExecuteShowFilterDialogCommand);
         }
 
         private void ExecuteOpenCommand()
@@ -108,5 +112,14 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             _mainViewModel.FolderTreeViewModel.UpdateSelectedFolderToRoot();
         }
 
+        private void ExecuteShowFilterDialogCommand()
+        {
+            var dialog = new FilteringDialog()
+            {
+                DataContext = _mainViewModel.FilteringViewModel
+            };
+
+            dialog.ShowDialog();
+        }
     }
 }

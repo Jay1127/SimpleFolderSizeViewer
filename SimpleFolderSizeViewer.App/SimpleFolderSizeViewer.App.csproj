@@ -65,6 +65,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -88,8 +89,18 @@
     </ApplicationDefinition>
     <Compile Include="BindingProxy.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\EnumToBoolConverter.cs" />
     <Compile Include="Converter\IconToImageSourceConverter.cs" />
     <Compile Include="Extension\ObservableCollectionExt.cs" />
+    <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="Model\FilteringInput.cs" />
+    <Compile Include="Model\FilteringOption.cs" />
+    <Compile Include="Model\FilteringService.cs" />
+    <Compile Include="ViewModel\FilteringViewModel.cs" />
+    <Compile Include="ViewModel\IRequestCloseViewModel.cs" />
+    <Compile Include="View\FilteringDialog.xaml.cs">
+      <DependentUpon>FilteringDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\ColumnSettings.cs" />
     <Compile Include="Model\IFileSystemModel.cs" />
     <Compile Include="Model\PathNavigator.cs" />
@@ -103,7 +114,11 @@
     <Compile Include="ViewModel\IFolderSelectionHandle.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\FilteringDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -111,7 +126,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

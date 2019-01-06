@@ -15,6 +15,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public FolderContentViewModel FolderContentViewModel { get; private set; }
         public ColumnSettingsViewModel ColumnSettingsViewModel { get; private set; }
         public CommandViewModel CommandViewModel { get; private set; }
+        public FilteringViewModel FilteringViewModel { get; }
 
         public FolderTreeViewModel FolderTreeViewModel
         {
@@ -30,9 +31,11 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             CommandViewModel = new CommandViewModel(this);
             FolderContentViewModel = new FolderContentViewModel();
             FolderTreeViewModel = new FolderTreeViewModel();
+            FilteringViewModel = new ViewModelLocator().Filtering;
 
             FolderTreeViewModel.FolderSelected += FolderContentViewModel.UpdateSubItems;
             FolderContentViewModel.FolderSelected += FolderTreeViewModel.UpdatedSelectedFolder;
+            FilteringViewModel.FilteringDataChanged += FolderContentViewModel.Filter;
         }
     }
 }

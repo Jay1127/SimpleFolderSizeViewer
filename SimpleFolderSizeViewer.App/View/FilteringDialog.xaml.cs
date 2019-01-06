@@ -1,0 +1,30 @@
+﻿using SimpleFolderSizeViewer.App.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace SimpleFolderSizeViewer.App
+{
+    /// <summary>
+    /// FilteringDialog.xaml에 대한 상호 작용 논리
+    /// </summary>
+    public partial class FilteringDialog : Window
+    {
+        public FilteringDialog()
+        {
+            InitializeComponent();
+            var dataContext = (this.DataContext as FilteringViewModel);
+            dataContext.RequestClose += (sender, e) => this.Close();
+        }
+    }
+}

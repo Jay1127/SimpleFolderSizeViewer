@@ -1,0 +1,57 @@
+﻿<Window x:Class="SimpleFolderSizeViewer.App.FilteringDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleFolderSizeViewer.App"
+        xmlns:conv="clr-namespace:SimpleFolderSizeViewer.App"
+        xmlns:model="clr-namespace:SimpleFolderSizeViewer.App.Model"
+        mc:Ignorable="d"
+        Title="FilteringDialog" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" 
+        MinHeight="221" MaxWidth="551" Height="221" Width="551" DataContext="{Binding Source={StaticResource Locator}, Path=Filtering}">
+    <Grid>
+        <GroupBox Header="Filering" Padding="10" Margin="15,21,14.6,51" Height="120">
+            <Grid DataContext="{Binding FilteringInput}">
+                <Grid.Resources>
+                    <conv:EnumToBoolConverter x:Key="EnumToBool"/>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type RadioButton}">
+                            <Setter Property="Height" Value="25"/>
+                            <Setter Property="Margin" Value="10"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <RadioButton IsChecked="{Binding FilteringOption, ConverterParameter={x:Static model:FilteringOption.None}, Converter={StaticResource EnumToBool}}"
+                                 Content="None"/>
+                    <RadioButton IsChecked="{Binding FilteringOption, ConverterParameter={x:Static model:FilteringOption.Size}, Converter={StaticResource EnumToBool}}"
+                                 Content="Size"/>
+                    <RadioButton IsChecked="{Binding FilteringOption, ConverterParameter={x:Static model:FilteringOption.Percent}, Converter={StaticResource EnumToBool}}"
+                                 Content="Percent"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="Height" Value="27"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="Height" Value="27"/>
+                            <Setter Property="Width" Value="120"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Label Content="StartRange : " Margin="5,0,0,0"/>
+                    <TextBox Text="{Binding StartRangeText}" Height="27" Margin="5,0,0,0"/>
+                    <Label Content="~" Margin="25,0,0,0"/>
+                    <Label Content="EndRange : " Margin="25,0,0,0"/>
+                    <TextBox Text="{Binding EndRangeText}" Height="27" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <Button Command="{Binding ApplyCommand}" Content="Apply" Width="106" Height="25" Margin="423,157,15,10"/>
+
+    </Grid>
+</Window>
