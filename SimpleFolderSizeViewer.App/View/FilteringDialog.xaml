@@ -44,10 +44,10 @@
                         </Style>
                     </StackPanel.Resources>
                     <Label Content="StartRange : " Margin="5,0,0,0"/>
-                    <TextBox Text="{Binding StartRangeText}" Height="27" Margin="5,0,0,0"/>
+                    <TextBox Text="{Binding StartRange}" Height="27" Margin="5,0,0,0"/>
                     <Label Content="~" Margin="25,0,0,0"/>
                     <Label Content="EndRange : " Margin="25,0,0,0"/>
-                    <TextBox Text="{Binding EndRangeText}" Height="27" Margin="5,0,0,0"/>
+                    <TextBox Text="{Binding EndRange}" Height="27" Margin="5,0,0,0"/>
                 </StackPanel>
             </Grid>
         </GroupBox>

@@ -25,7 +25,6 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
             ApplyCommand = new RelayCommand(() =>
             {
-                FilteringInput.VerifyAndInitFilter();
                 FilteringDataChanged?.Invoke(FilteringInput);
 
                 RequestClose?.Invoke(this, EventArgs.Empty);

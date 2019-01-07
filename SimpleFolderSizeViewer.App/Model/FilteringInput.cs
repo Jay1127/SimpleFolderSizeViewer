@@ -15,69 +15,42 @@ namespace SimpleFolderSizeViewer.App.Model
         {
             get => _filteringOption;
             set
-            {
+            {                
                 Set(ref _filteringOption, value);
+
+                if(_filteringOption == FilteringOption.None)
+                {
+                    StartRange = null;
+                    EndRange = null;
+                }
             }
         }
 
-        private string _startRangeText;
-        public string StartRangeText
+        private double? _startRange;
+        public double? StartRange
         {
-            get => _startRangeText;
+            get => _startRange;
             set
             {
-                Set(ref _startRangeText, value);
+                Set(ref _startRange, value);
             }
         }
 
-        private string _endRangeText;
-        public string EndRangeText
+        private double? _endRange;
+        public double? EndRange
         {
-            get => _endRangeText;
+            get => _endRange;
             set
             {
-                Set(ref _endRangeText, value);
+                Set(ref _endRange, value);
             }
         }
 
-        public double StartRange { get; set; }
-        public double EndRange { get; set; }
-
-        public bool CanFilter { get; private set; }
+        public bool CanFilter { get => _filteringOption != FilteringOption.None; }
 
         public FilteringInput()
         {
             FilteringOption = FilteringOption.None;
-            StartRangeText = string.Empty;
-            EndRangeText = string.Empty;
         }
-
-        public void VerifyAndInitFilter()
-        {
-            if(FilteringOption == FilteringOption.None)
-            {
-                CanFilter = false;
-                return;
-            }
-
-            double startRange = 0.0;
-            double endRange = double.MaxValue;
-
-            if(StartRangeText.HasAnyCharacter() && !double.TryParse(StartRangeText, out startRange))
-            {
-                CanFilter = false;
-                return;
-            }
-
-            if (EndRangeText.HasAnyCharacter() && !double.TryParse(EndRangeText, out endRange))
-            {
-                CanFilter = false;
-                return;
-            }
-
-            CanFilter = true;
-            StartRange = startRange;
-            EndRange = endRange;
-        }      
     }
 }

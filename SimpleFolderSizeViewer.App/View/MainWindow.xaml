@@ -61,7 +61,7 @@
                 <Button Command="{Binding OpenCommand}" ToolTip="Open folder with scanning">
                     <Image Source="pack://application:,,,/Resources/open.png"/>
                 </Button>
-                <Button ToolTip="Scan All">
+                <Button Command="{Binding ScanCommand}" ToolTip="Scan All">
                     <Image Source="pack://application:,,,/Resources/scan.png"/>
                 </Button>
                 <Separator />

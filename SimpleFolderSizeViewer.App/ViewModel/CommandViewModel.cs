@@ -65,6 +65,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             var folderTree = _mainViewModel.FolderTreeViewModel;
             var root = folderTree.Root;
 
+            if (root == null) return;
+
             FolderSizeBuilder.Build(root.Entity);            
             
             folderTree.UpdateRoot(root);
@@ -101,6 +103,12 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         private void ExecuteMoveParentCommand()
         {
             var folderTree = _mainViewModel.FolderTreeViewModel;
+
+            if (!CanMoveParent(folderTree.SelectedFolder))
+            {
+                return;
+            }
+
             folderTree.UpdatedSelectedFolder(folderTree.SelectedFolder.Parent);
             _pathNavigator.AddPath(folderTree.SelectedFolder);
 
@@ -120,6 +128,11 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             };
 
             dialog.ShowDialog();
+        }
+
+        private bool CanMoveParent(FolderModel selectedFolder)
+        {
+            return selectedFolder != null && selectedFolder.Parent != null;
         }
     }
 }

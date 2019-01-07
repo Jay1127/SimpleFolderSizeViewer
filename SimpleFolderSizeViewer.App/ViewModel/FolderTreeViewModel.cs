@@ -89,6 +89,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
         public void UpdateRoot(FolderModel root)
         {
+            if (root == null) return;
+
             Root = root;
             Root.IsExpanded = true;
 
