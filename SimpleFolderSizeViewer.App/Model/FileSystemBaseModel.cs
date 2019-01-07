@@ -17,15 +17,18 @@ namespace SimpleFolderSizeViewer.App.Model
         public bool IsSelected
         {
             get => _isSelected;
-            set => Set<bool>(ref _isSelected, value);
+            set => Set(ref _isSelected, value);
         }
 
         public FolderModel Parent { get; }
+
+        public FileSize FileSize { get; }
 
         public FileSystemBaseModel(T model, FolderModel parent)
         {
             Entity = model;
             Parent = parent;
+            FileSize = new FileSize(model);
         }
 
         public void Dispose()

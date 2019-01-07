@@ -36,6 +36,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             FolderTreeViewModel.FolderSelected += FolderContentViewModel.UpdateSubItems;
             FolderContentViewModel.FolderSelected += FolderTreeViewModel.UpdatedSelectedFolder;
             FilteringViewModel.FilteringDataChanged += FolderContentViewModel.Filter;
+            FileSize.FileSizeUnitChanged += FolderContentViewModel.UpdateFileSizeUnit;
         }
     }
 }

@@ -80,5 +80,13 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             FilteringService service = new FilteringService(SubNodes);
             service.Filter(filteringInput);
         }
+
+        public void UpdateFileSizeUnit(object sender, EventArgs eventArgs)
+        {
+            foreach(var subNode in SubNodes)
+            {
+                subNode.FileSize.RaisePropertyChanged(nameof(subNode.FileSize.SizeFormat));
+            }
+        }
     }
 }

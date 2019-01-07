@@ -37,7 +37,7 @@ namespace SimpleFolderSizeViewer.App.Model
             {
                 _collectionView.Filter = (obj) =>
                 {
-                    double size = (obj as IFileSystemModel<FileSystemEntity>).Entity.Size.SizeByUnit;
+                    double size = (obj as IFileSystemModel<FileSystemEntity>).FileSize.SizeByUnit;
 
                     return size >= fIlteringInput.StartRange &&
                            size <= fIlteringInput.EndRange;

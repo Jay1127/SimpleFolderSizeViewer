@@ -17,7 +17,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
         public Folder Parent { get; }
         public string Path { get; }
         public Icon Icon { get; }
-        public FileSize Size { get; set; }
+        public double Size { get; set; }
 
         public FileSystemEntity(FileSystemInfo fileSystemInfo, double sizeByByte = 0)
         {
@@ -26,7 +26,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
             LastModifiedTime = fileSystemInfo.LastWriteTime;
             Name = fileSystemInfo.Name;
             Path = fileSystemInfo.FullName;
-            Size = new FileSize(sizeByByte);            
+            Size = sizeByByte;
             Icon = IconStorage.Instance.Select(fileSystemInfo);
         }
 

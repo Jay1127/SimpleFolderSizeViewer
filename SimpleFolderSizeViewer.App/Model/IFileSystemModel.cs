@@ -11,5 +11,6 @@ namespace SimpleFolderSizeViewer.App.Model
     {
         T Entity { get; }
         FolderModel Parent { get; }
+        FileSize FileSize { get; }
     }
 }

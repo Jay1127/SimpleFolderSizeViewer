@@ -28,7 +28,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                                     .Select(d => new File(d, this))
                                     .ToList();
 
-            Size = new FileSize(SubFiles.Sum(f => f.Size.SizeByByte));
+            Size = SubFiles.Sum(f => f.Size);
         }
 
         private List<Folder> InitSubFolders(DirectoryInfo directoryInfo)
