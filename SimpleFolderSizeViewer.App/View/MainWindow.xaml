@@ -65,7 +65,7 @@
                     <Image Source="pack://application:,,,/Resources/scan.png"/>
                 </Button>
                 <Separator />
-                <Button ToolTip="Column settings" >
+                <Button Command="{Binding ShowFilterDialogCommand}" ToolTip="Column settings" >
                     <Image Source="pack://application:,,,/Resources/settings.png"/>
                 </Button>
                 <Button ToolTip="Error log">

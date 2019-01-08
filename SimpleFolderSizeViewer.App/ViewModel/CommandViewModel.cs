@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SimpleFolderSizeViewer.App.ViewModel
 {
@@ -26,6 +27,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public RelayCommand MoveParentFolderCommand { get; }
         public RelayCommand MoveRootFolderCommand { get; }
 
+        public RelayCommand ShowColumnSettingsCommand { get; }
         public RelayCommand ShowFilterDialogCommand { get; }
 
         public CommandViewModel(MainViewModel mainViewModel)
@@ -40,7 +42,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             MoveParentFolderCommand = new RelayCommand(ExecuteMoveParentCommand);
             MoveRootFolderCommand = new RelayCommand(ExecuteMoveRootCommand);
 
-            ShowFilterDialogCommand = new RelayCommand(ExecuteShowFilterDialogCommand);
+            ShowColumnSettingsCommand = new RelayCommand(ExecuteShowColumnSettings);
+            ShowFilterDialogCommand = new RelayCommand(ExecuteShowDialog);
         }
 
         private void ExecuteOpenCommand()
@@ -120,12 +123,20 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             _mainViewModel.FolderTreeViewModel.UpdateSelectedFolderToRoot();
         }
 
-        private void ExecuteShowFilterDialogCommand()
+        private void ExecuteShowDialog()
         {
-            var dialog = new FilteringDialog()
-            {
-                DataContext = _mainViewModel.FilteringViewModel
-            };
+            ShowDialog<FilteringDialog>(_mainViewModel.FilteringViewModel);
+        }
+
+        private void ExecuteShowColumnSettings()
+        {
+            ShowDialog<ColumnSettingDialog>(_mainViewModel.ColumnSettingsViewModel);
+        }
+
+        private void ShowDialog<T>(object viewModel) where T : Window, new()
+        {
+            var dialog = new T();
+            dialog.DataContext = viewModel;
 
             dialog.ShowDialog();
         }

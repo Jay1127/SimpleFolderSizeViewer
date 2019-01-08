@@ -99,6 +99,9 @@
     <Compile Include="Model\FilteringService.cs" />
     <Compile Include="ViewModel\FilteringViewModel.cs" />
     <Compile Include="ViewModel\IRequestCloseViewModel.cs" />
+    <Compile Include="View\ColumnSettingDialog.xaml.cs">
+      <DependentUpon>ColumnSettingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\FilteringDialog.xaml.cs">
       <DependentUpon>FilteringDialog.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
     <Compile Include="ViewModel\IFolderSelectionHandle.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Page Include="View\ColumnSettingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\FilteringDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -10,7 +10,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 {
     public class ColumnSettingsViewModel
     {
-        public ColumnSettings ColumnSettings { get; set; }
+        public ColumnSettings ColumnSettings { get; }
 
         public ColumnSettingsViewModel()
         {
