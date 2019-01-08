@@ -49,6 +49,7 @@
     <Compile Include="DataModel\FileSystemEntity.cs" />
     <Compile Include="DataModel\Folder.cs" />
     <Compile Include="DataModel\IconStorage.cs" />
+    <Compile Include="ErrorLogRepository.cs" />
     <Compile Include="FolderSizeBuilder.cs" />
     <Compile Include="IconExtractor.cs" />
     <Compile Include="History\PathNavigator.cs" />

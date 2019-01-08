@@ -68,7 +68,7 @@
                 <Button ToolTip="Column settings" >
                     <Image Source="pack://application:,,,/Resources/settings.png"/>
                 </Button>
-                <Button ToolTip="Error log">
+                <Button Command="{Binding ShowErrorLogDialogCommand}"  ToolTip="Error log">
                     <Image Source="pack://application:,,,/Resources/error.png"/>
                 </Button>
                 <ToggleButton Command="{Binding ShowFilterDialogCommand}" 

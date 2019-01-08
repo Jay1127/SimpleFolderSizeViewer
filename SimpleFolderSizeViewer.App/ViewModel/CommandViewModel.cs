@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SimpleFolderSizeViewer.App.ViewModel
 {
@@ -27,6 +28,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public RelayCommand MoveRootFolderCommand { get; }
 
         public RelayCommand ShowFilterDialogCommand { get; }
+        public RelayCommand ShowErrorLogDialogCommand { get; }
 
         public CommandViewModel(MainViewModel mainViewModel)
         {
@@ -41,6 +43,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             MoveRootFolderCommand = new RelayCommand(ExecuteMoveRootCommand);
 
             ShowFilterDialogCommand = new RelayCommand(ExecuteShowFilterDialogCommand);
+            ShowErrorLogDialogCommand = new RelayCommand(ExecuteShowDialogCommand<ErrorLogDialog>);
         }
 
         private void ExecuteOpenCommand()
@@ -127,6 +130,17 @@ namespace SimpleFolderSizeViewer.App.ViewModel
                 DataContext = _mainViewModel.FilteringViewModel
             };
 
+            dialog.ShowDialog();
+        }
+
+        private void ExecuteShowDialogCommand<T>() where T : Window, new()
+        {
+            ShowDialog<T>();
+        }
+
+        public void ShowDialog<T>() where T : Window, new()
+        {
+            var dialog = new T();
             dialog.ShowDialog();
         }
 

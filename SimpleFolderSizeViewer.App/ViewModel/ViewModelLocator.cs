@@ -44,6 +44,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<FilteringViewModel>();
+            SimpleIoc.Default.Register<ErrorLogViewModel>();
         }
 
         public MainViewModel Main
@@ -59,6 +60,14 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<FilteringViewModel>();
+            }
+        }
+
+        public ErrorLogViewModel ErrorLog
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ErrorLogViewModel>();
             }
         }
 
