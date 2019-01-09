@@ -11,12 +11,23 @@ namespace SimpleFolderSizeViewer.Core
 {
     public class FolderSizeBuilder
     {
-        public static void Build(Folder root)
+        public delegate void FolderSizeChangedHandler();
+        public event FolderSizeChangedHandler FolderSizeChanged;
+
+        public FolderSizeBuilder()
         {
+
+        }
+
+        public void Build(Folder root)
+        {
+            root.InitSubFolders();
+
             foreach (var subFolder in root.SubFolders)
             {
                 Build(subFolder);
                 root.Size += subFolder.Size;
+                FolderSizeChanged?.Invoke();
             }
         }
     }

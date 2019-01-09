@@ -29,17 +29,27 @@ namespace SimpleFolderSizeViewer.App.Model
 
         public FolderModel(Folder folder, FolderModel parent) : base(folder, parent)
         {
-            var subfolders = from subFolder in folder.SubFolders
-                             select new FolderModel(subFolder, this);
+            //var subfolders = from subFolder in folder.SubFolders
+            //                 select new FolderModel(subFolder, this);
 
             var subFiles = from subFile in folder.SubFiles
                            select new FileModel(subFile, this);
 
-            SubFolders = new ReadOnlyObservableCollection<FolderModel>(
-                new ObservableCollection<FolderModel>(subfolders));
+            SubFolders = new ReadOnlyObservableCollection<FolderModel>(new ObservableCollection<FolderModel>());
 
             SubFiles = new ReadOnlyObservableCollection<FileModel>(
                 new ObservableCollection<FileModel>(subFiles));
+        }
+
+        public void InitSubFolders()
+        {
+            var subfolders = from subFolder in Entity.SubFolders
+                             select new FolderModel(subFolder, this);
+            
+            SubFolders = new ReadOnlyObservableCollection<FolderModel>(
+                new ObservableCollection<FolderModel>(subfolders));
+
+            RaisePropertyChanged(nameof(SubFolders));
         }
     }
 }

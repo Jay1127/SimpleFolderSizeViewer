@@ -55,23 +55,57 @@ namespace SimpleFolderSizeViewer.App.ViewModel
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     var folderTree = _mainViewModel.FolderTreeViewModel;
-                    var root = new FolderModel(new Folder(dialog.FileName, null));      // no root is null;
+                    var root = new Folder(dialog.FileName, null);
+                    root.InitSubFolders();
 
-                    folderTree.UpdateRoot(root);
+                    var rootModel = new FolderModel(root);      // no root is null;                    
+                    rootModel.InitSubFolders();
 
-                    _pathNavigator.AddPath(root);
+                    folderTree.UpdateRoot(rootModel);
+
+                    _pathNavigator.Clear();
+                    _pathNavigator.AddPath(rootModel);
                 }
             }
         }
 
-        private void ExecuteScanCommand()
+        private async void ExecuteScanCommand()
         {
             var folderTree = _mainViewModel.FolderTreeViewModel;
             var root = folderTree.Root;
 
             if (root == null) return;
 
-            FolderSizeBuilder.Build(root.Entity);            
+            //FolderSizeBuilder.Build(root.Entity);            
+            Parallel.ForEach(root.SubFolders, async subFolder =>
+            {
+                await Task.Run(() =>
+                {
+                    var builder = new FolderSizeBuilder();
+                    builder.FolderSizeChanged += () =>
+                    {
+                        subFolder.RaisePropertyChanged(nameof(subFolder.FileSize));
+                    };
+
+                    builder.Build(subFolder.Entity);
+
+                    subFolder.InitSubFolders();
+                });
+            });
+
+            //foreach (var subFolder in root.SubFolders)
+            //{
+            //    await Task.Run(() =>
+            //    {
+            //        var builder = new FolderSizeBuilder();
+            //        builder.FolderSizeChanged += () =>
+            //        {
+            //            subFolder.RaisePropertyChanged(nameof(subFolder.FileSize));
+            //        };
+
+            //        builder.Build(subFolder.Entity);
+            //    });
+            //}
             
             folderTree.UpdateRoot(root);
         }

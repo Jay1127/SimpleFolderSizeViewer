@@ -23,7 +23,9 @@ namespace SimpleFolderSizeViewer.Core.DataModel
 
         public Folder(DirectoryInfo directoryInfo, Folder parent) : base(directoryInfo)
         {
-            SubFolders = InitSubFolders(directoryInfo);
+            SubFolders = new List<Folder>();
+
+            //SubFolders = InitSubFolders(directoryInfo);
             SubFiles = directoryInfo.EnumerateFiles()
                                     .Select(d => new File(d, this))
                                     .ToList();
@@ -31,9 +33,9 @@ namespace SimpleFolderSizeViewer.Core.DataModel
             Size = SubFiles.Sum(f => f.Size);
         }
 
-        private List<Folder> InitSubFolders(DirectoryInfo directoryInfo)
+        public void InitSubFolders()
         {
-            var subFolders = new List<Folder>();
+            var directoryInfo = new DirectoryInfo(Path);
 
             foreach (var dirInfo in directoryInfo.EnumerateDirectories())
             {
@@ -44,15 +46,13 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                         continue;
                     }
 
-                    subFolders.Add(new Folder(dirInfo.FullName, this));
+                    SubFolders.Add(new Folder(dirInfo.FullName, this));
                 }
                 catch (UnauthorizedAccessException e)
                 {
                     ErrorLogRepository.Instance.ErrorList.Add(e.Message);
                 }
             }
-
-            return subFolders;
         }
     }
 }
