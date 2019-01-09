@@ -97,10 +97,14 @@
     <Compile Include="Model\FilteringInput.cs" />
     <Compile Include="Model\FilteringOption.cs" />
     <Compile Include="Model\FilteringService.cs" />
+    <Compile Include="ViewModel\ErrorLogViewModel.cs" />
     <Compile Include="ViewModel\FilteringViewModel.cs" />
     <Compile Include="ViewModel\IRequestCloseViewModel.cs" />
     <Compile Include="View\ColumnSettingDialog.xaml.cs">
       <DependentUpon>ColumnSettingDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ErrorLogDialog.xaml.cs">
+      <DependentUpon>ErrorLogDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\FilteringDialog.xaml.cs">
       <DependentUpon>FilteringDialog.xaml</DependentUpon>
@@ -119,6 +123,10 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="View\ColumnSettingDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ErrorLogDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

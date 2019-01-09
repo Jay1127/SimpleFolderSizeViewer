@@ -24,7 +24,6 @@ namespace SimpleFolderSizeViewer.Core.DataModel
         private IconStorage()
         {
             iconByExtension = new Dictionary<string, Icon>();
-            Save(new DirectoryInfo(Environment.CurrentDirectory));
         }
 
         public Icon Select(FileSystemInfo fileSystemInfo)
@@ -37,9 +36,23 @@ namespace SimpleFolderSizeViewer.Core.DataModel
             return iconByExtension[fileSystemInfo.Extension];
         }
 
+        public Icon Select(FileSystemEntity fileSystemEntity)
+        {
+            if (!HasIcon(fileSystemEntity.Extension))
+            {
+                Save(fileSystemEntity);
+            }
+            return iconByExtension[fileSystemEntity.Extension];
+        }
+
         private void Save(FileSystemInfo fileSystemInfo)
         {
             iconByExtension[fileSystemInfo.Extension] = IconExtractor.Extract(fileSystemInfo.FullName);
+        }
+
+        private void Save(FileSystemEntity fileSystemEntity)
+        {
+            iconByExtension[fileSystemEntity.Extension] = IconExtractor.Extract(fileSystemEntity.Path);
         }
 
         private bool HasIcon(string extension)

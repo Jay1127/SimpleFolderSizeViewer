@@ -48,6 +48,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                 }
                 catch (UnauthorizedAccessException e)
                 {
+                    ErrorLogRepository.Instance.ErrorList.Add(e.Message);
                 }
             }
 
