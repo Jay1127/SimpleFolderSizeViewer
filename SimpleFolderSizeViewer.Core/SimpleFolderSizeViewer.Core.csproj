@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel\File.cs" />
+    <Compile Include="DataModel\FileSize.cs" />
     <Compile Include="DataModel\FileSystemEntity.cs" />
     <Compile Include="DataModel\Folder.cs" />
     <Compile Include="DataModel\IconStorage.cs" />

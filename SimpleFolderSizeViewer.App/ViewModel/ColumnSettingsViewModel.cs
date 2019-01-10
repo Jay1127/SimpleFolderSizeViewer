@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SimpleFolderSizeViewer.App.ViewModel
 {
     public class ColumnSettingsViewModel
-    {
+    {        
         public ColumnSettings ColumnSettings { get; }
 
         public ColumnSettingsViewModel()

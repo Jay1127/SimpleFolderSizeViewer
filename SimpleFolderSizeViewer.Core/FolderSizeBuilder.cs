@@ -26,7 +26,10 @@ namespace SimpleFolderSizeViewer.Core
             foreach (var subFolder in root.SubFolders)
             {
                 Build(subFolder);
-                root.Size += subFolder.Size;
+                root.Size.SizeByByte += subFolder.Size.SizeByByte;
+                root.SubFolderCount += subFolder.SubFolderCount;
+                root.SubFileCount += subFolder.SubFileCount;
+                
                 FolderSizeChanged?.Invoke();
             }
         }

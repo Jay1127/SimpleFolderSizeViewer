@@ -9,9 +9,9 @@ namespace SimpleFolderSizeViewer.Core.DataModel
 {
     public class Folder : FileSystemEntity
     {
-        public int SubFolderCount => SubFolders.Count;
-        public int SubFileCount => SubFiles.Count;
-        public int SubNodeCount => SubNodes.Count;
+        public int SubFolderCount { get; set; }
+        public int SubFileCount { get; set; }
+        public int SubNodeCount { get => SubFolderCount + SubFileCount; }
 
         public List<Folder> SubFolders { get; }
         public List<File> SubFiles { get; }
@@ -30,11 +30,15 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                                     .Select(d => new File(d, this))
                                     .ToList();
 
-            Size = SubFiles.Sum(f => f.Size);
+            SubFileCount = SubFiles.Count;
+
+            Size = new FileSize(SubFiles.Sum(f => f.Size.SizeByByte));
         }
 
         public void InitSubFolders()
         {
+            ClearSubFolders();
+
             var directoryInfo = new DirectoryInfo(Path);
 
             foreach (var dirInfo in directoryInfo.EnumerateDirectories())
@@ -47,12 +51,35 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                     }
 
                     SubFolders.Add(new Folder(dirInfo.FullName, this));
+                    
                 }
                 catch (UnauthorizedAccessException e)
                 {
                     ErrorLogRepository.Instance.ErrorList.Add(e.Message);
                 }
             }
+
+            SubFolderCount = SubFolders.Count;
+        }
+
+        public void ClearSubFolders()
+        {
+            ClearFileSystemEntities(SubFolders);
+        }
+
+        public void ClearSubFiles()
+        {
+            ClearFileSystemEntities(SubFiles);
+        }
+
+        private void ClearFileSystemEntities<T>(List<T> fileSystemEntities) where T : FileSystemEntity
+        {
+            fileSystemEntities.ForEach(entity =>
+            {
+                entity.Dispose();
+            });
+
+            fileSystemEntities.Clear();
         }
     }
 }

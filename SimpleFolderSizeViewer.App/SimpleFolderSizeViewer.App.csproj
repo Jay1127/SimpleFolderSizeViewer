@@ -93,7 +93,6 @@
     <Compile Include="Converter\IconToImageSourceConverter.cs" />
     <Compile Include="Extension\ObservableCollectionExt.cs" />
     <Compile Include="Extension\StringExtension.cs" />
-    <Compile Include="Model\FileSize.cs" />
     <Compile Include="Model\FilteringInput.cs" />
     <Compile Include="Model\FilteringOption.cs" />
     <Compile Include="Model\FilteringService.cs" />

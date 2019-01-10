@@ -81,12 +81,12 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             service.Filter(filteringInput);
         }
 
-        public void UpdateFileSizeUnit(object sender, EventArgs eventArgs)
+        public void UpdateFileSizeUnit()
         {
-            foreach(var subNode in SubNodes)
-            {
-                subNode.FileSize.RaisePropertyChanged(nameof(subNode.FileSize.SizeFormat));
-            }
+            SubNodes.Clear();
+
+            SubNodes.AddRange(SelectedFolder.SubFolders);
+            SubNodes.AddRange(SelectedFolder.SubFiles);
         }
     }
 }

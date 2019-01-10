@@ -31,6 +31,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public RelayCommand ShowFilterDialogCommand { get; }
         public RelayCommand ShowErrorLogDialogCommand { get; }
 
+        public RelayCommand SetFolderSizeUnitCommand { get; }
+
         public CommandViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -45,6 +47,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             ShowColumnSettingsCommand = new RelayCommand(ExecuteShowDialogCommand<ColumnSettingDialog>);
             ShowFilterDialogCommand = new RelayCommand(ExecuteShowDialogCommand<FilteringDialog>);
             ShowErrorLogDialogCommand = new RelayCommand(ExecuteShowDialogCommand<ErrorLogDialog>);
+
+            SetFolderSizeUnitCommand = new RelayCommand(ExecuteFolderSizeUnitCommand);
         }
 
         private void ExecuteOpenCommand()
@@ -69,14 +73,13 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             }
         }
 
-        private async void ExecuteScanCommand()
+        private void ExecuteScanCommand()
         {
             var folderTree = _mainViewModel.FolderTreeViewModel;
             var root = folderTree.Root;
 
             if (root == null) return;
-
-            //FolderSizeBuilder.Build(root.Entity);            
+         
             Parallel.ForEach(root.SubFolders, async subFolder =>
             {
                 await Task.Run(() =>
@@ -84,28 +87,18 @@ namespace SimpleFolderSizeViewer.App.ViewModel
                     var builder = new FolderSizeBuilder();
                     builder.FolderSizeChanged += () =>
                     {
-                        subFolder.RaisePropertyChanged(nameof(subFolder.FileSize));
+                        subFolder.RaisePropertyChanged(nameof(subFolder.SizeFormat));
+
+                        // 느린 경우(SubFolder/FIleCount) wrapping해서 proertychanged 호출...!!
+                        subFolder.RaisePropertyChanged(nameof(subFolder.Entity));
                     };
 
                     builder.Build(subFolder.Entity);
 
-                    subFolder.InitSubFolders();
+                    //subFolder.InitSubFolders();
+                    subFolder.InitSubFolderTree();
                 });
             });
-
-            //foreach (var subFolder in root.SubFolders)
-            //{
-            //    await Task.Run(() =>
-            //    {
-            //        var builder = new FolderSizeBuilder();
-            //        builder.FolderSizeChanged += () =>
-            //        {
-            //            subFolder.RaisePropertyChanged(nameof(subFolder.FileSize));
-            //        };
-
-            //        builder.Build(subFolder.Entity);
-            //    });
-            //}
             
             folderTree.UpdateRoot(root);
         }
@@ -156,6 +149,12 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         private void ExecuteMoveRootCommand()
         {            
             _mainViewModel.FolderTreeViewModel.UpdateSelectedFolderToRoot();
+        }
+
+        private void ExecuteFolderSizeUnitCommand()
+        {
+            _mainViewModel.FolderContentViewModel.UpdateFileSizeUnit();
+            //Core.DataModel.FileSize.Unit
         }
 
         private void ExecuteShowDialogCommand<T>() where T : Window, new()

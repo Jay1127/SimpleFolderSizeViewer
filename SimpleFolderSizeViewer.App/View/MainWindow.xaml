@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:local="clr-namespace:SimpleFolderSizeViewer.App"
-        xmlns:model="clr-namespace:SimpleFolderSizeViewer.App.Model"
+        xmlns:model="clr-namespace:SimpleFolderSizeViewer.Core.DataModel;assembly=SimpleFolderSizeViewer.Core"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1200" DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.Resources>
@@ -77,14 +77,14 @@
                     <Image Source="pack://application:,,,/Resources/filter.png"/>
                 </ToggleButton>
                 <Separator />
-                <RadioButton IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.B}}"
-                             Style="{StaticResource toggleBtn}" Content="B"></RadioButton>
-                <RadioButton IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.KB}}"
-                             Style="{StaticResource toggleBtn}" Content="KB"></RadioButton>
-                <RadioButton IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.MB}}"
-                             Style="{StaticResource toggleBtn}" Content="MB"></RadioButton>
-                <RadioButton IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.GB}}"
-                             Style="{StaticResource toggleBtn}" Content="GB"></RadioButton>
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.B}}"
+                             Style="{StaticResource toggleBtn}" Content="B"/>
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.KB}}"
+                             Style="{StaticResource toggleBtn}" Content="KB"/>
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.MB}}"
+                             Style="{StaticResource toggleBtn}" Content="MB"/>
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.GB}}"
+                             Style="{StaticResource toggleBtn}" Content="GB"/>
                 <Separator />
             </ToolBar>
         </ToolBarTray>
@@ -149,7 +149,7 @@
                 <DataGridTextColumn Binding="{Binding Entity.Name}" 
                                     Visibility="{Binding Data, Source={StaticResource NameProxy}}"
                                     Header="Name" Width="2*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding FileSize.SizeFormat}"
+                <DataGridTextColumn Binding="{Binding SizeFormat}"
                                     Visibility="{Binding Data, Source={StaticResource SizeProxy}}"
                                     Header="Size" Width="*" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Entity.Percent, StringFormat=P2}"

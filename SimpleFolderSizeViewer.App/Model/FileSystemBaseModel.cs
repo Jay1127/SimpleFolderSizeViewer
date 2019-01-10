@@ -20,15 +20,20 @@ namespace SimpleFolderSizeViewer.App.Model
             set => Set(ref _isSelected, value);
         }
 
-        public FolderModel Parent { get; }
+        public FolderModel Parent { get; protected set; }
 
-        public FileSize FileSize { get; }
+        public string SizeFormat
+        {
+            get
+            {
+                return $"{Entity.Size.SizeByUnit:F2}{FileSize.Unit}";
+            }
+        }
 
         public FileSystemBaseModel(T model, FolderModel parent)
         {
             Entity = model;
             Parent = parent;
-            FileSize = new FileSize(model);
         }
 
         public void Dispose()
