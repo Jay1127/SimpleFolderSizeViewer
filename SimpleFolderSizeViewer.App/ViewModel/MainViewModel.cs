@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using log4net;
 using SimpleFolderSizeViewer.App.Model;
 using SimpleFolderSizeViewer.Core;
 using SimpleFolderSizeViewer.Core.DataModel;
@@ -26,7 +27,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public MainViewModel()
         {
             log.Info("App start");
-            
+
             ColumnSettingsViewModel = new ColumnSettingsViewModel();
             CommandViewModel = new CommandViewModel(this);
             FolderContentViewModel = new FolderContentViewModel();
