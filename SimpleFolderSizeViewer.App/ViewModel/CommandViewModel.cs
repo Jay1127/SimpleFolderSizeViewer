@@ -31,6 +31,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public RelayCommand ShowFilterDialogCommand { get; }
         public RelayCommand ShowErrorLogDialogCommand { get; }
 
+        public RelayCommand SetFolderSizeUnitCommand { get; }
+
         public CommandViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -45,6 +47,8 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             ShowColumnSettingsCommand = new RelayCommand(ExecuteShowDialogCommand<ColumnSettingDialog>);
             ShowFilterDialogCommand = new RelayCommand(ExecuteShowDialogCommand<FilteringDialog>);
             ShowErrorLogDialogCommand = new RelayCommand(ExecuteShowDialogCommand<ErrorLogDialog>);
+
+            SetFolderSizeUnitCommand = new RelayCommand(ExecuteFolderSizeUnitCommand);
         }
 
         private void ExecuteOpenCommand()
@@ -55,11 +59,16 @@ namespace SimpleFolderSizeViewer.App.ViewModel
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     var folderTree = _mainViewModel.FolderTreeViewModel;
-                    var root = new FolderModel(new Folder(dialog.FileName, null));      // no root is null;
+                    var root = new Folder(dialog.FileName, null);
+                    root.InitSubFolders();
 
-                    folderTree.UpdateRoot(root);
+                    var rootModel = new FolderModel(root);      // no root is null;                    
+                    rootModel.InitSubFolders();
 
-                    _pathNavigator.AddPath(root);
+                    folderTree.UpdateRoot(rootModel);
+
+                    _pathNavigator.Clear();
+                    _pathNavigator.AddPath(rootModel);
                 }
             }
         }
@@ -70,8 +79,26 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             var root = folderTree.Root;
 
             if (root == null) return;
+         
+            Parallel.ForEach(root.SubFolders, async subFolder =>
+            {
+                await Task.Run(() =>
+                {
+                    var builder = new FolderSizeBuilder();
+                    builder.FolderSizeChanged += () =>
+                    {
+                        subFolder.RaisePropertyChanged(nameof(subFolder.SizeFormat));
 
-            FolderSizeBuilder.Build(root.Entity);            
+                        // 느린 경우(SubFolder/FIleCount) wrapping해서 proertychanged 호출...!!
+                        subFolder.RaisePropertyChanged(nameof(subFolder.Entity));
+                    };
+
+                    builder.Build(subFolder.Entity);
+
+                    //subFolder.InitSubFolders();
+                    subFolder.InitSubFolderTree();
+                });
+            });
             
             folderTree.UpdateRoot(root);
         }
@@ -122,6 +149,12 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         private void ExecuteMoveRootCommand()
         {            
             _mainViewModel.FolderTreeViewModel.UpdateSelectedFolderToRoot();
+        }
+
+        private void ExecuteFolderSizeUnitCommand()
+        {
+            _mainViewModel.FolderContentViewModel.UpdateFileSizeUnit();
+            //Core.DataModel.FileSize.Unit
         }
 
         private void ExecuteShowDialogCommand<T>() where T : Window, new()

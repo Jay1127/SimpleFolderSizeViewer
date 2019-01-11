@@ -28,7 +28,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         {
             log.Info("App start");
 
-            ColumnSettingsViewModel = new ColumnSettingsViewModel();
+            ColumnSettingsViewModel = new ViewModelLocator().ColumnSettings;
             CommandViewModel = new CommandViewModel(this);
             FolderContentViewModel = new FolderContentViewModel();
             FolderTreeViewModel = new FolderTreeViewModel();
@@ -37,7 +37,6 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             FolderTreeViewModel.FolderSelected += FolderContentViewModel.UpdateSubItems;
             FolderContentViewModel.FolderSelected += FolderTreeViewModel.UpdatedSelectedFolder;
             FilteringViewModel.FilteringDataChanged += FolderContentViewModel.Filter;
-            FileSize.FileSizeUnitChanged += FolderContentViewModel.UpdateFileSizeUnit;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SimpleFolderSizeViewer.App.Model
 
         }
 
-        public FolderModel(Folder folder, FolderModel parent) : base(folder, parent)
+        public FolderModel(Folder folder, FolderModel parent, bool isInitSubFolder = false) : base(folder, parent)
         {
             var subfolders = from subFolder in folder.SubFolders
                              select new FolderModel(subFolder, this);
@@ -36,10 +36,38 @@ namespace SimpleFolderSizeViewer.App.Model
                            select new FileModel(subFile, this);
 
             SubFolders = new ReadOnlyObservableCollection<FolderModel>(
-                new ObservableCollection<FolderModel>(subfolders));
+                new ObservableCollection<FolderModel>());
 
             SubFiles = new ReadOnlyObservableCollection<FileModel>(
                 new ObservableCollection<FileModel>(subFiles));
+        }
+
+        public void InitSubFolders()
+        {
+            var subfolders = from subFolder in Entity.SubFolders
+                             select new FolderModel(subFolder, this);
+            
+            SubFolders = new ReadOnlyObservableCollection<FolderModel>(
+                new ObservableCollection<FolderModel>(subfolders));
+
+            RaisePropertyChanged(nameof(SubFolders));
+        }
+
+        public void InitSubFolderTree()
+        {
+            var subfolders = from subFolder in Entity.SubFolders
+                             select new FolderModel(subFolder, this);
+
+            SubFolders = new ReadOnlyObservableCollection<FolderModel>(
+                new ObservableCollection<FolderModel>(subfolders));
+
+            foreach(var subFolder in SubFolders)
+            {
+                subFolder.Parent = this;
+                subFolder.InitSubFolderTree();
+            }
+
+            //RaisePropertyChanged(nameof(SubFolders));
         }
     }
 }

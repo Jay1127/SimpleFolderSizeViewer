@@ -9,9 +9,9 @@ namespace SimpleFolderSizeViewer.Core.DataModel
 {
     public class Folder : FileSystemEntity
     {
-        public int SubFolderCount => SubFolders.Count;
-        public int SubFileCount => SubFiles.Count;
-        public int SubNodeCount => SubNodes.Count;
+        public int SubFolderCount { get; set; }
+        public int SubFileCount { get; set; }
+        public int SubNodeCount { get => SubFolderCount + SubFileCount; }
 
         public List<Folder> SubFolders { get; }
         public List<File> SubFiles { get; }
@@ -23,17 +23,23 @@ namespace SimpleFolderSizeViewer.Core.DataModel
 
         public Folder(DirectoryInfo directoryInfo, Folder parent) : base(directoryInfo)
         {
-            SubFolders = InitSubFolders(directoryInfo);
+            SubFolders = new List<Folder>();
+
+            //SubFolders = InitSubFolders(directoryInfo);
             SubFiles = directoryInfo.EnumerateFiles()
                                     .Select(d => new File(d, this))
                                     .ToList();
 
-            Size = SubFiles.Sum(f => f.Size);
+            SubFileCount = SubFiles.Count;
+
+            Size = new FileSize(SubFiles.Sum(f => f.Size.SizeByByte));
         }
 
-        private List<Folder> InitSubFolders(DirectoryInfo directoryInfo)
+        public void InitSubFolders()
         {
-            var subFolders = new List<Folder>();
+            ClearSubFolders();
+
+            var directoryInfo = new DirectoryInfo(Path);
 
             foreach (var dirInfo in directoryInfo.EnumerateDirectories())
             {
@@ -44,7 +50,8 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                         continue;
                     }
 
-                    subFolders.Add(new Folder(dirInfo.FullName, this));
+                    SubFolders.Add(new Folder(dirInfo.FullName, this));
+                    
                 }
                 catch (UnauthorizedAccessException e)
                 {
@@ -52,7 +59,27 @@ namespace SimpleFolderSizeViewer.Core.DataModel
                 }
             }
 
-            return subFolders;
+            SubFolderCount = SubFolders.Count;
+        }
+
+        public void ClearSubFolders()
+        {
+            ClearFileSystemEntities(SubFolders);
+        }
+
+        public void ClearSubFiles()
+        {
+            ClearFileSystemEntities(SubFiles);
+        }
+
+        private void ClearFileSystemEntities<T>(List<T> fileSystemEntities) where T : FileSystemEntity
+        {
+            fileSystemEntities.ForEach(entity =>
+            {
+                entity.Dispose();
+            });
+
+            fileSystemEntities.Clear();
         }
     }
 }
