@@ -9,9 +9,16 @@ using System.Threading.Tasks;
 
 namespace SimpleFolderSizeViewer.Core
 {
+    /// <summary>
+    /// 폴더의 크기를 생성하는 클래스
+    /// </summary>
     public class FolderSizeBuilder
     {
         public delegate void FolderSizeChangedHandler();
+
+        /// <summary>
+        /// 폴더 사이즈 변경된 경우 호출
+        /// </summary>
         public event FolderSizeChangedHandler FolderSizeChanged;
 
         public FolderSizeBuilder()
@@ -19,6 +26,10 @@ namespace SimpleFolderSizeViewer.Core
 
         }
 
+        /// <summary>
+        /// 폴더의 크기 생성
+        /// </summary>
+        /// <param name="root"></param>
         public void Build(Folder root)
         {
             root.InitSubFolders();
