@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
         xmlns:local="clr-namespace:SimpleFolderSizeViewer.App"
         xmlns:model="clr-namespace:SimpleFolderSizeViewer.Core.DataModel;assembly=SimpleFolderSizeViewer.Core"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="SimpleFolderSizeViewer" Height="650" Width="1200" DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.Resources>
@@ -30,6 +31,84 @@
             <RowDefinition Height="32"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
+        <TreeView DataContext="{Binding FolderTreeViewModel}" 
+                  ItemsSource="{Binding FolderTree}"
+                  x:Name="folderTree" Grid.Row="1" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}" 
+                                           CommandParameter="{Binding SelectedItem, ElementName=folderTree}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                        <Image Source="{Binding Entity.Icon, Converter={StaticResource IconToImageSource}}" Margin="0,0,3,0"/>
+                        <TextBlock Text="{Binding Entity.Name}" Width="200"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+
+        <DataGrid DataContext="{Binding FolderContentViewModel}" 
+                  ItemsSource="{Binding SubNodes}"  
+                  x:Name="dgFolderContent"
+                  Grid.Row="1"  Grid.Column="1" Background="White"
+                  AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding UpdateSelectedFolderCommand}"
+                                           CommandParameter="{Binding SelectedItem, ElementName=dgFolderContent}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.CellStyle>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Entity.Icon, Converter={StaticResource IconToImageSource}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Entity.Name}" 
+                                    Visibility="{Binding Data, Source={StaticResource NameProxy}}"
+                                    Header="Name" Width="2*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding SizeFormat}"
+                                    Visibility="{Binding Data, Source={StaticResource SizeProxy}}"
+                                    Header="Size" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.Percent, StringFormat=P2}"
+                                    Visibility="{Binding Data, Source={StaticResource PercentProxy}}" 
+                                    Header="Percent" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.Extension}"
+                                    Visibility="{Binding Data, Source={StaticResource ExtensionProxy}}"
+                                    Header="Type" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.SubFolderCount}"
+                                    Visibility="{Binding Data, Source={StaticResource FolderCountProxy}}"
+                                    Header="SubFolderCount" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.SubFileCount}"
+                                    Visibility="{Binding Data, Source={StaticResource FileCountProxy}}"
+                                    Header="SubFileCount" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.CreationTime}" 
+                                    Visibility="{Binding Data, Source={StaticResource CreationTimeProxy}}"
+                                    Header="CreationTime" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Entity.LastModifiedTime}"
+                                    Visibility="{Binding Data, Source={StaticResource ModifiedTimeProxy}}" 
+                                    Header="LastModifiedTime" Width="*" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <ToolBarTray DataContext="{Binding CommandViewModel}" Grid.ColumnSpan="2" Background="Transparent">
             <ToolBarTray.Resources>
@@ -77,101 +156,24 @@
                     <Image Source="pack://application:,,,/Resources/filter.png"/>
                 </ToggleButton>
                 <Separator />
-                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.B}}"
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" 
+                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.B}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="B"/>
-                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.KB}}"
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" 
+                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.KB}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="KB"/>
-                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.MB}}"
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}"
+                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.MB}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="MB"/>
-                <RadioButton Command="{Binding SetFolderSizeUnitCommand}" IsChecked="{Binding Path=(model:FileSize.Unit), Converter={StaticResource EnumToBool}, ConverterParameter={x:Static model:SizeUnit.GB}}"
+                <RadioButton Command="{Binding SetFolderSizeUnitCommand}"
+                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.GB}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="GB"/>
                 <Separator />
             </ToolBar>
         </ToolBarTray>
-
-        <TreeView DataContext="{Binding FolderTreeViewModel}" 
-                  ItemsSource="{Binding FolderTree}"
-                  Name="folderTree" Grid.Row="1" >
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}" 
-                                           CommandParameter="{Binding ElementName=folderTree, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
-                    <StackPanel Orientation="Horizontal" Margin="3">
-                        <Image Source="{Binding Entity.Icon, Converter={StaticResource IconToImageSource}}" Margin="0,0,3,0"/>
-                        <TextBlock Text="{Binding Entity.Name}" Width="200"/>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
-
-        <DataGrid DataContext="{Binding FolderContentViewModel}" 
-                  ItemsSource="{Binding SubNodes}"  
-                  Name="dgFolderContent"
-                  Grid.Row="1"  Grid.Column="1" Background="White"
-                  AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column">
-            <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding UpdateSelectedFolderCommand}"
-                                           CommandParameter="{Binding SelectedItem, ElementName=dgFolderContent}"/>
-            </DataGrid.InputBindings>
-            <!--<i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding UpdateSelectedFolderCommand}"
-                                           CommandParameter="{Binding SelectedItem, ElementName=dgFolderContent}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>-->
-            <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderThickness" Value="0" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.Columns>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding Entity.Icon, Converter={StaticResource IconToImageSource}}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Entity.Name}" 
-                                    Visibility="{Binding Data, Source={StaticResource NameProxy}}"
-                                    Header="Name" Width="2*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding SizeFormat}"
-                                    Visibility="{Binding Data, Source={StaticResource SizeProxy}}"
-                                    Header="Size" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.Percent, StringFormat=P2}"
-                                    Visibility="{Binding Data, Source={StaticResource PercentProxy}}" 
-                                    Header="Percent" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.Extension}"
-                                    Visibility="{Binding Data, Source={StaticResource ExtensionProxy}}"
-                                    Header="Type" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.SubFolderCount}"
-                                    Visibility="{Binding Data, Source={StaticResource FolderCountProxy}}"
-                                    Header="SubFolderCount" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.SubFileCount}"
-                                    Visibility="{Binding Data, Source={StaticResource FileCountProxy}}"
-                                    Header="SubFileCount" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.CreationTime}" 
-                                    Visibility="{Binding Data, Source={StaticResource CreationTimeProxy}}"
-                                    Header="CreationTime" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.LastModifiedTime}"
-                                    Visibility="{Binding Data, Source={StaticResource ModifiedTimeProxy}}" 
-                                    Header="LastModifiedTime" Width="*" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
+        <!--<xctk:BusyIndicator DataContext="{Binding ScanStatus}" 
+                            IsBusy="{Binding IsScanning}" 
+                            BusyContent="{Binding CompletedCount}" 
+                            Grid.Row="1" Grid.ColumnSpan="2"/>-->
     </Grid>
 </Window>

@@ -46,7 +46,7 @@ namespace SimpleFolderSizeViewer.Core.DataModel
             get
             {
                 _icon = _icon ?? IconStorage.Instance.Select(this);
-                return Icon;
+                return _icon;
             }
         }
 

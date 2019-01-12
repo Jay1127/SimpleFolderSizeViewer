@@ -79,7 +79,10 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             var root = folderTree.Root;
 
             if (root == null) return;
-         
+
+            //var scanStatus = _mainViewModel.ScanStatus;
+            //scanStatus = new ScanStatus(root.SubFolders.Count);
+
             Parallel.ForEach(root.SubFolders, async subFolder =>
             {
                 await Task.Run(() =>
@@ -95,9 +98,11 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
                     builder.Build(subFolder.Entity);
 
-                    //subFolder.InitSubFolders();
+                    subFolder.InitSubFolders();
                     subFolder.InitSubFolderTree();
                 });
+
+                //scanStatus.Complete();
             });
             
             folderTree.UpdateRoot(root);

@@ -114,6 +114,7 @@
     <Compile Include="Model\FilteringInput.cs" />
     <Compile Include="Model\FilteringOption.cs" />
     <Compile Include="Model\FilteringService.cs" />
+    <Compile Include="Model\ScanStatus.cs" />
     <Compile Include="ViewModel\ErrorLogViewModel.cs" />
     <Compile Include="ViewModel\FilteringViewModel.cs" />
     <Compile Include="ViewModel\IRequestCloseViewModel.cs" />
