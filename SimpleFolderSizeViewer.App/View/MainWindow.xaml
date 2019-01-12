@@ -171,9 +171,9 @@
                 <Separator />
             </ToolBar>
         </ToolBarTray>
-        <!--<xctk:BusyIndicator DataContext="{Binding ScanStatus}" 
+        <xctk:BusyIndicator DataContext="{Binding ScanStatus}" 
                             IsBusy="{Binding IsScanning}" 
-                            BusyContent="{Binding CompletedCount}" 
-                            Grid.Row="1" Grid.ColumnSpan="2"/>-->
+                            BusyContent="{Binding ScanText}" 
+                            Grid.Row="1" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

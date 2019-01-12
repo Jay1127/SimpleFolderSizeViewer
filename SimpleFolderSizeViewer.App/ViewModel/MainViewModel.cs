@@ -40,6 +40,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             FolderContentViewModel = new FolderContentViewModel();
             FolderTreeViewModel = new FolderTreeViewModel();
             FilteringViewModel = new ViewModelLocator().Filtering;
+            
 
             FolderTreeViewModel.FolderSelected += FolderContentViewModel.UpdateSubItems;
             FolderContentViewModel.FolderSelected += FolderTreeViewModel.UpdatedSelectedFolder;
