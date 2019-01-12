@@ -159,7 +159,6 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         private void ExecuteFolderSizeUnitCommand()
         {
             _mainViewModel.FolderContentViewModel.UpdateFileSizeUnit();
-            //Core.DataModel.FileSize.Unit
         }
 
         private void ExecuteShowDialogCommand<T>() where T : Window, new()

@@ -157,16 +157,16 @@
                 </ToggleButton>
                 <Separator />
                 <RadioButton Command="{Binding SetFolderSizeUnitCommand}" 
-                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.B}, Converter={StaticResource EnumToBool}}"
+                             IsChecked="{Binding Path=(model:FileSize.Unit), ConverterParameter={x:Static model:SizeUnit.B}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="B"/>
                 <RadioButton Command="{Binding SetFolderSizeUnitCommand}" 
-                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.KB}, Converter={StaticResource EnumToBool}}"
+                             IsChecked="{Binding Path=(model:FileSize.Unit), ConverterParameter={x:Static model:SizeUnit.KB}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="KB"/>
                 <RadioButton Command="{Binding SetFolderSizeUnitCommand}"
-                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.MB}, Converter={StaticResource EnumToBool}}"
+                             IsChecked="{Binding Path=(model:FileSize.Unit), ConverterParameter={x:Static model:SizeUnit.MB}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="MB"/>
                 <RadioButton Command="{Binding SetFolderSizeUnitCommand}"
-                             IsChecked="{Binding Path=model:FileSize.Unit, ConverterParameter={x:Static model:SizeUnit.GB}, Converter={StaticResource EnumToBool}}"
+                             IsChecked="{Binding Path=(model:FileSize.Unit), ConverterParameter={x:Static model:SizeUnit.GB}, Converter={StaticResource EnumToBool}}"
                              Style="{StaticResource toggleBtn}" Content="GB"/>
                 <Separator />
             </ToolBar>
