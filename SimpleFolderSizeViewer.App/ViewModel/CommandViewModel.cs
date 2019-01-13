@@ -73,7 +73,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             }
         }
 
-        private void ExecuteScanCommand()
+        private async void ExecuteScanCommand()
         {
             var folderTree = _mainViewModel.FolderTreeViewModel;
             var root = folderTree.Root;
@@ -82,7 +82,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
             _mainViewModel.ScanStatus = new ScanStatus(root.SubFolders.Count);
 
-            Parallel.ForEach(root.SubFolders, async subFolder =>
+            var task = root.SubFolders.Select(async subFolder =>
             {
                 await Task.Run(() =>
                 {
@@ -103,7 +103,14 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
                 _mainViewModel.ScanStatus.Complete();
             });
-            
+
+            await Task.WhenAll(task);
+
+            root.Entity.Size.SizeByByte = root.Entity.SubFolders.Sum(subFolder => subFolder.Size.SizeByByte);
+            root.Entity.SetPercentToSubItems();
+
+            root.RaisePropertyChanged(nameof(root.Entity));
+
             folderTree.UpdateRoot(root);
         }
 
@@ -115,6 +122,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             }
 
             _pathNavigator.MovePrev();
+
             var folderTree = _mainViewModel.FolderTreeViewModel;
             folderTree.UpdatedSelectedFolder(_pathNavigator.Current);
 
@@ -129,6 +137,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
             }
 
             _pathNavigator.MoveNext();
+
             var folderTree = _mainViewModel.FolderTreeViewModel;
             folderTree.UpdatedSelectedFolder(_pathNavigator.Current);
 

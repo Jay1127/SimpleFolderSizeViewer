@@ -40,9 +40,11 @@ namespace SimpleFolderSizeViewer.Core
                 root.Size.SizeByByte += subFolder.Size.SizeByByte;
                 root.SubFolderCount += subFolder.SubFolderCount;
                 root.SubFileCount += subFolder.SubFileCount;
-                
-                FolderSizeChanged?.Invoke();
             }
+
+            root.SetPercentToSubItems();
+
+            FolderSizeChanged?.Invoke();
         }
     }
 }

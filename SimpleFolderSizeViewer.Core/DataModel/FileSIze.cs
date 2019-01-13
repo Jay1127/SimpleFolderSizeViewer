@@ -47,6 +47,8 @@ namespace SimpleFolderSizeViewer.Core.DataModel
         /// </summary>
         public double SizeByUnit => CalculateSizeByUnit();
         
+        public double Percent { get; set; }
+
         /// <summary>
         /// 현재 적용된 파일 단위
         /// </summary>

@@ -15,7 +15,10 @@ namespace SimpleFolderSizeViewer.App.Model
             => CompletedCount != TotalCount;
 
         public string ScanText
-            => $"Scanning folder...({CompletedCount}/{TotalCount})";
+            => $"Scanning folder...({CompletedPercent}%)";
+
+        public int CompletedPercent
+            => (int)((double)CompletedCount/ TotalCount * 100);
 
         public int TotalCount { get; }
 

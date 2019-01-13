@@ -89,7 +89,7 @@
                 <DataGridTextColumn Binding="{Binding SizeFormat}"
                                     Visibility="{Binding Data, Source={StaticResource SizeProxy}}"
                                     Header="Size" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.Percent, StringFormat=P2}"
+                <DataGridTextColumn Binding="{Binding Entity.Size.Percent, StringFormat=P2}"
                                     Visibility="{Binding Data, Source={StaticResource PercentProxy}}" 
                                     Header="Percent" Width="*" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding Entity.Extension}"

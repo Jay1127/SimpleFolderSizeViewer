@@ -111,6 +111,12 @@ namespace SimpleFolderSizeViewer.Core.DataModel
             ClearFileSystemEntities(SubFiles);
         }
 
+        public void SetPercentToSubItems()
+        {
+            SubFolders.ForEach(subFolder => subFolder.Size.Percent = subFolder.Size.SizeByByte / Size.SizeByByte);
+            SubFiles.ForEach(subFiles => subFiles.Size.Percent = subFiles.Size.SizeByByte / Size.SizeByByte);
+        }
+
         /// <summary>
         /// 하위 파일 또는 폴더의 자원을 해제하여 지움.
         /// </summary>

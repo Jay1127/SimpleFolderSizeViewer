@@ -27,7 +27,7 @@ namespace SimpleFolderSizeViewer.App.Model
 
         }
 
-        public FolderModel(Folder folder, FolderModel parent, bool isInitSubFolder = false) : base(folder, parent)
+        public FolderModel(Folder folder, FolderModel parent) : base(folder, parent)
         {
             var subfolders = from subFolder in folder.SubFolders
                              select new FolderModel(subFolder, this);
