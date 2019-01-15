@@ -1,7 +1,7 @@
 # SimpleFolderSizeViewer
 WPF MVVM패턴을 이용한 폴더 사이즈 탐색기 샘플 프로그램.
 
-![1547127899534](https://github.com/Jay1127/SimpleFolderSizeViewer/blob/develop/Doc/UI.png)
+![1547127899534](https://github.com/Jay1127/SimpleFolderSizeViewer/blob/develop/Doc/samples.gif)
 
 
 
