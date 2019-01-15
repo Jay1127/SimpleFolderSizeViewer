@@ -166,6 +166,10 @@ namespace SimpleFolderSizeViewer.App.ViewModel
 
         private void ExecuteFolderSizeUnitCommand()
         {
+            bool canExecute = _mainViewModel.FolderContentViewModel.SelectedFolder != null;
+
+            if (!canExecute) return;
+
             _mainViewModel.FolderContentViewModel.UpdateFileSizeUnit();
         }
 

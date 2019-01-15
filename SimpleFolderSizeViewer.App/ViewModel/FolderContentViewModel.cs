@@ -69,10 +69,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         {
             SelectedFolder = selectedFolder;
 
-            SubNodes.Clear();
-
-            SubNodes.AddRange(selectedFolder.SubFolders);
-            SubNodes.AddRange(selectedFolder.SubFiles);
+            Refresh();
         }
 
         public void Filter(FilteringInput filteringInput)
@@ -82,6 +79,11 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         }
 
         public void UpdateFileSizeUnit()
+        {
+            Refresh();
+        }
+
+        private void Refresh()
         {
             SubNodes.Clear();
 
