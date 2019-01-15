@@ -177,6 +177,7 @@ namespace SimpleFolderSizeViewer.App.ViewModel
         public void ShowDialog<T>() where T : Window, new()
         {
             var dialog = new T();
+            dialog.Owner = Application.Current.MainWindow;
             dialog.ShowDialog();
         }
 

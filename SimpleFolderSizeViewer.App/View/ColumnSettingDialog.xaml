@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleFolderSizeViewer.App"
         mc:Ignorable="d"
-        Title="ColumnSettings" Height="170" Width="350" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="ColumnSettings" Height="170" Width="350" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" 
         DataContext="{Binding Source={StaticResource Locator}, Path=ColumnSettings}">
     <Grid>
         <Grid.Resources>
