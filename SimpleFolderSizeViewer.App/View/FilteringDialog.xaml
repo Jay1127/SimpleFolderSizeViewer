@@ -7,10 +7,10 @@
         xmlns:conv="clr-namespace:SimpleFolderSizeViewer.App"
         xmlns:model="clr-namespace:SimpleFolderSizeViewer.App.Model"
         mc:Ignorable="d"
-        Title="FilteringDialog" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" 
-        MinHeight="221" MaxWidth="551" Height="221" Width="551" DataContext="{Binding Source={StaticResource Locator}, Path=Filtering}">
+        Title="FilteringDialog" WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow" ShowInTaskbar="False"
+        ResizeMode="NoResize" DataContext="{Binding Source={StaticResource Locator}, Path=Filtering}" Height="246.6" Width="590.4">
     <Grid>
-        <GroupBox Header="Filering" Padding="10" Margin="15,21,14.6,51" Height="120">
+        <GroupBox Header="Filering" Padding="10" Margin="15,26,15,0" Height="120" VerticalAlignment="Top">
             <Grid DataContext="{Binding FilteringInput}">
                 <Grid.Resources>
                     <conv:EnumToBoolConverter x:Key="EnumToBool"/>
@@ -51,7 +51,6 @@
                 </StackPanel>
             </Grid>
         </GroupBox>
-        <Button Command="{Binding ApplyCommand}" Content="Apply" Width="106" Height="25" Margin="423,157,15,10"/>
-
+        <Button Command="{Binding ApplyCommand}" Content="Apply" Height="25" Margin="441,166,15,0" VerticalAlignment="Top" />
     </Grid>
 </Window>
