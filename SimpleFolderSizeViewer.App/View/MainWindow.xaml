@@ -101,10 +101,10 @@
                 <DataGridTextColumn Binding="{Binding Entity.SubFileCount}"
                                     Visibility="{Binding Data, Source={StaticResource FileCountProxy}}"
                                     Header="SubFileCount" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.CreationTime}" 
+                <DataGridTextColumn Binding="{Binding Entity.CreationTime, StringFormat='{}{0:yyyy-MM-dd tt h:mm}'}" 
                                     Visibility="{Binding Data, Source={StaticResource CreationTimeProxy}}"
                                     Header="CreationTime" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Entity.LastModifiedTime}"
+                <DataGridTextColumn Binding="{Binding Entity.LastModifiedTime, StringFormat='{}{0:yyyy-MM-dd tt h:mm}'}"
                                     Visibility="{Binding Data, Source={StaticResource ModifiedTimeProxy}}" 
                                     Header="LastModifiedTime" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
